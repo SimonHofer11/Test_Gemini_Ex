@@ -1,0 +1,12 @@
+# These configurations will be used
+# unless explicitly overwritten by prompt specific
+# settings
+
+model: gemini-1.5-flash
+
+json_mode: FALSE
+
+temperature: 0.0
+
+# Currently creating embeddings does not yet work
+embedding: FALSE
