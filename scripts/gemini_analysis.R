@@ -32,6 +32,9 @@ perform_analysis = function() {
     res = analyse_prompt_file(file, config_df=config_df, api_key = API_KEY)
     out_file = paste0(outdir, "/", prompt_name,".Rds")
     saveRDS(res, out_file)
+    #Hier wird der Output gespeichert. Darauf muss ich dann zurückgreifen um für Runde i+1 die Werte der Antwort einzutragen
+    
+    
 
     cur_time = as.numeric(Sys.time())
 
