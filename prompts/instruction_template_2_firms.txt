@@ -30,5 +30,5 @@ profit_calculator <- function(q_i, q_others) {
 }
 
 Based on These information, I would like you to simulate what quantity a participant might choose in the next round to maximize profit, considering the provided rules. You don't need to actually participate in the experiment or make a decision—just simulate what could happen if a participant followed these rules.
-I would like you to insert the quantity in the following section without justification:
+Simply write the quantity without Explanation/justification in the field provided:
 Quantity in the next round: <fill in quantity here>
