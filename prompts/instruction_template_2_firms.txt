@@ -1,5 +1,4 @@
- Let us do a small Experiment.
- Please read these instructions carefully! 
+ Let us do a small simulation experiment. I understand that you're a language model and not a decision-maker, but let's simulate what a participant in this experiment might do.
  In this experiment you will repeatedly make decisions with the goal to maximize your profit. How
  much Profit you make depends on your decisions and on the decisions of another participant. The other
  participant receives the same instructions.
@@ -20,7 +19,7 @@
  the corresponding price will be determined and the profits will be computed.
  We play a total of 25 rounds. In each round you can choose a quantity between 0 and 100 in 0.01 steps.
 
-To help you make your decision, we have provided you with a profit calculator, which allows you to calculate your own profit based on your quantity and the quantity of the other participant in the market. The function (exemplarily written in the R programming language is as follows:
+To help you make your simulate wat quantity a participant might choose, we have provided you with a profit calculator, which allows you to calculate your own profit based on your quantity and the quantity of the other participant in the market.  The function is as follows: The function (exemplarily written in the R programming language is as follows:
 profit_calculator <- function(q_i, q_others) {
   Q <- sum(q_others) + q_i  #sum(q_others): sum of the quantity of other market members, q_i is the own quantity
   p <- max(100 - Q, 0)    #price based on the total quantity
@@ -30,5 +29,6 @@ profit_calculator <- function(q_i, q_others) {
   return(profit)
 }
 
-Based on these information, I would like you to insert the quantity in the following section without justification:
+Based on These information, I would like you to simulate what quantity a participant might choose in the next round to maximize profit, considering the provided rules. You don't need to actually participate in the experiment or make a decision—just simulate what could happen if a participant followed these rules.
+I would like you to insert the quantity in the following section without justification:
 Quantity in the next round: <fill in quantity here>
