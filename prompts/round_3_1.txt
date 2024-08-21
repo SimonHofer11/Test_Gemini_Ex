@@ -1,0 +1,18 @@
+costs per unit = 1
+quantity you set in the last round = 39
+total quantity in the markte= 82
+resulting price in the market = 3
+own profit in the last round= 41
+As previously mentioned, we have provided you with a profit calculator, which allows you to calculate your own profit based on your quantity and the total quantity of your competitors in the market. The function (exemplarily written in the R programming language) is as follows:
+
+profit_calculator <- function(q_i, q_others) {
+  Q <- sum(q_others) + q_i  # sum(q_others): sum of the quantity of other market members, q_i is the own quantity
+  p <- max(100 - Q, 0)  # price based on the total quantity
+  revenue <- p * q_i
+  costs <- q_i * 1
+  profit <- revenue - costs
+  return(profit)
+}
+
+Based on this information, I would like you to insert the price in the following section without justification:
+Price in the next round: 3
