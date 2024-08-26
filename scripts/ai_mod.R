@@ -222,8 +222,18 @@ player_make_history_text = function(game, i) {
 
   # Build history text from past prices, q and profits for the player
 
-  hist_text = "-- I WILL BE THE HISTORY TEXT--" # TO DO
-
+  #hist_text = "-- I WILL BE THE HISTORY TEXT--" # TO DO
+  hist_text = "To help you, we have listed the quantities you have placed so far, the resulting market prices and your profits:\n\n"
+  
+  for (round in 1:(t-1)) {
+    # Add the results of each round to the history text
+    hist_text = paste0(hist_text,
+                       "Round ", round, ":\n",
+                       "Your quantity: ", df$q[round], "\n",
+                       "Market price: ", round(df$p[round], 2), "\n",
+                       "Your profit: ", round(df$pi[round], 2), "\n\n")
+  }
+  
   df$hist_text[t] = hist_text
 
   game$player_dfs[[i]] = df
