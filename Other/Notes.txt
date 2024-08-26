@@ -1,0 +1,45 @@
+Ablauf wörtlich
+
+1. new_game Funktion:
+kreiert neues game-objekt:
+-anzahl spieler, anzahl runden, aktuelle Runde (am Anfang auf 0), players_df, ok = TRUE
+
+Resultat: game
+
+2. game_play_next_round Funktion:
+erhöht aktuelle Runde um + 1
+
+Für jeden Spieler:
+-make_history text: Build history text from past prices, q and profits for the player
+--> TODO
+nachdem Text kreiert wird: wird dem game-objekt des Spielers hinzugefügt
+
+-make_plan_prompt: Geplanter Prompt für die aktuelle Runde an Gemini
+Ergebnis: plan_prompt bei Game Objekt
+-run_plan_prompt: 
+nimmt prompt von make_plan_prompt & 
+übergibt das dann an run_text_prompt
+Resultat: in plan wird dann der geschriebene Plan gespeichert
+
+-make_q_prompt: TO-DO: der Command mit dem man dann q setzten soll.
+-player_run_q_prompt: Übergibt den Mengenprompt und erhält als Antwort dann die Menge
+
+-game_compute_round_results: TO-DO
+Fkt die dann gesamtmenge berechnet und pro Spieler:
+Profit, Gesamtmenge übergibt. Gibt dann wie alle anderen Funktionen das Objekt game zurück
+
+
+
+Idee mit Ansatz pro Spieler in jeder Runde 2 prompts an Agenten:
+-Gibt erst Agenten vor, dass dieser einen Plan für die nächste Runde basierend auf dem historischen Text und Mengen etc geben soll.
+
+Dann 2. prompt: Übergibt den Plan, sowie alle Informationen und dann soll der Agent die Menge als JSON zurückliefern.
+
+To-Do: 
+-Probelauf durchführen
+-Funktionen make_strategy_prompt & play_player_round ausfüllen
+-Funktionen fertig ausfüllen
+-Prompting
+-Prompts ausführen in Gemini und Resultate dann separat einspeichern
+-Dann wieder Termin mit Herrn Kranz-> GO für Durchlauf?
+
