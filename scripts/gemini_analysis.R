@@ -10,9 +10,14 @@ perform_analysis = function() {
   API_KEY = Sys.getenv("API_KEY")
   setwd("~")
   outdir = "/root/output"
+  print("hier")
   if (.Platform$OS.type == "windows") {
+    print("TRUE")
     setwd("C:/libraries/gpt/gemini/gemini_ex")
+    #setwd("C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex")
+    
   }
+  print("hier2")
   if (FALSE) {
     setwd("~/repbox/gemini/gemini_gha")
   }
