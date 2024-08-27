@@ -1,0 +1,17 @@
+Plan in the next round:
+Objective: Maximize profit.
+Analysis:
+Round 1: Both firms produced 50 units, resulting in a price of 0 and a loss for both.
+Round 2: I reduced my quantity to 40 units, while the other firm reduced theirs to 25. This resulted in a higher price (35) and a profit for both firms.
+Round 3: I further reduced my quantity to 35, while the other firm reduced theirs to 15. This resulted in an even higher price (50) and an increased profit for both firms.
+Strategy:
+The market seems to be moving towards a lower quantity, which results in a higher price and greater profit.
+However, there's a risk of overshooting the optimal quantity, leading to a lower price and potentially losses.
+To mitigate this risk:
+I will reduce my quantity by a smaller increment (e.g., 5 units) compared to the previous round.
+I will observe the other firm's quantity decision to adjust my strategy accordingly.
+Quantity Choice: 30 units
+Reasoning:
+This quantity is a safe reduction from my previous production, allowing me to observe the market response.
+If the other firm also reduces their quantity, the price is likely to remain high, generating a good profit.
+If the other firm maintains or increases their quantity, the price may decrease, but the reduction in my production will limit potential losses.

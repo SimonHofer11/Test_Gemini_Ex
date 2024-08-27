@@ -1,0 +1,43 @@
+Let us do a small simulation experiment. I understand that you're a language model and not a decision-maker, but let's simulate what a participant in this experiment might do.
+In this experiment you repeatedly make decisions with the goal to maximize your profit. How
+much Profit you make depends on your decisions and on the decisions of another participant. The other
+participant receives the same instructions.
+You will stay anonymous for us and for the other randomly chosen participant you contact during the experiment.
+In this experiment you represent a firm that, like the other firm,
+produces and sells one and the same product on a market. You will be constantly matched
+with the same participant. Costs of production are 1$ per unit (this holds for the other firm as well).
+In each round, firms will always have to make one decision, namely what quantity they wish to produce.
+The following important rule holds: The larger the total quantity of all firms, the smaller
+the price in the market. Moreover, the price will be zero from a certain amount of total
+output upwards.
+Your profit per unit of output will be the difference between the market price and the unit cost of 1$. Note that you will make a loss if the market price is below the unit costs.
+Your profit per round is, thus, equal to the profit per unit multiplied by the number of Units you sell.
+In each round the output decisions of both firms will be registered,
+the corresponding price will be determined and the profits will be computed.
+We play a total of 25 rounds. In each round you can write down a stratetic plan and choose a quantity between 0 and 100 in 0.01 steps.
+
+To help you make your simulate what quantity a participant might choose, we have provided you with a profit calculator, which allows you to calculate your own profit based on your quantity and the quantity of the other participant in the market. The function is as follows: The function (exemplarily written in the R programming language is as follows:
+profit_calculator <- function(q_i, q_others) {
+Q <- sum(q_others) + q_i #sum(q_others): sum of the quantity of other market members, q_i is the own quantity
+p <- max(100 - Q, 0) #price based on the total quantity
+revenue <- p * q_i
+costs <- q_i
+profit <- revenue - costs
+return(profit)
+}
+
+Furthermore, to help you, we have listed the quantities you have placed so far, the resulting market prices and your Profits
+Round 1:
+Your quantity: 50
+Market Price: 0
+Quantity of other firms: 50
+Your Profit: -50
+Round 2:
+Your quantity: 25
+Market Price: 35
+Quantity of other firms: 40
+Your Profit: 850
+
+Based on These information, I would like you to write down your plans for what quantity strategy to test in the next round. Be detailed and precise but keep things succinct, while considering the provided rules.
+Simply write the plan for the next round in the field provided.
+Plan in the next round: <fill in plan here>

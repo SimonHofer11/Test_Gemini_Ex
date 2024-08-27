@@ -1,0 +1,14 @@
+Plan in the next round:
+Objective: Maximize profit by finding the optimal quantity to produce.
+Strategy:
+Analyze past rounds:
+Notice that when the total quantity produced is higher than 100, the price becomes zero, resulting in losses.
+The optimal quantity seems to be around 25-35. This range has consistently resulted in positive profits.
+Predict the other firm's behavior:
+The other firm seems to be producing a quantity in the same range (35-40).
+It's possible they are also using a similar strategy of maximizing profit.
+Adjust quantity based on previous round:
+In the previous round, the other firm produced 35 and I produced 15, resulting in a high price and good profit.
+To capitalize on this, I will slightly increase my quantity to 20. This will hopefully maintain a high price while increasing my share of the market.
+Quantity for Round 4: 20
+Justification: By increasing my output slightly, I aim to maintain a high price while still benefiting from the previous round's positive results. This strategy assumes that the other firm will remain in a similar quantity range.

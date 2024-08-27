@@ -1,0 +1,8 @@
+Plan in the next round:
+Strategy: Reduce quantity to observe price reaction.
+Reasoning:
+Round 1: The market was saturated (total quantity of 100), leading to a price of 0 and a loss.
+Round 2: Reducing the quantity to 40 resulted in a positive profit. This suggests that a lower quantity could be more profitable.
+Next Move:
+Quantity: 35 (reducing quantity further)
+Rationale: By reducing quantity, we aim to potentially increase the price, thus improving the profit margin. A reduction to 35 allows for a significant reduction while still potentially producing a profitable outcome, given the results of Round 2.

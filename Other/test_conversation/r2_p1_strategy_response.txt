@@ -1,0 +1,7 @@
+Plan in the next round:
+Reduce quantity to 25.
+Reasoning:
+The first round resulted in a loss because the total quantity produced (50 + 50 = 100) exceeded the price threshold, driving the price to zero. This indicates the market is highly sensitive to output levels.
+Reducing the quantity to 25 will test the market's response. If the other firm also reduces their quantity, we might see a positive price and potentially profit. If they maintain their quantity at 50, we might still see a loss, but it will be smaller than the previous round.
+Goal:
+To explore the relationship between quantity and price by decreasing output and observe the impact on profit.

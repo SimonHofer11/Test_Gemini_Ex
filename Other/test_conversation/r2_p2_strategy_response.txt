@@ -1,0 +1,15 @@
+Plan in the next round:
+Observation:
+In the first round, both firms produced 50 units.
+This resulted in a total quantity of 100 units, exceeding the price threshold of 100.
+Consequently, the market price dropped to 0, leading to a loss of -50 for each firm.
+Strategic Consideration:
+The key takeaway is that exceeding a total market quantity of 100 units results in a zero price and losses.
+To maximize profit, we need to produce a quantity that allows for a positive price.
+Since the other firm also seeks to maximize profit, it's likely they will also aim for a quantity less than 50 to avoid repeating the previous round's outcome.
+Plan:
+Reduce quantity to 40 units. This is a significant decrease from the previous round and increases the likelihood of a positive market price.
+Observe the other firm's quantity: Based on the other firm's choice in this round, we can adjust our strategy further in subsequent rounds.
+If the other firm also reduces quantity, we can gradually increase our output. This strategy aims to find the equilibrium point where both firms can achieve positive profit.
+If the other firm maintains or increases its quantity, we should further reduce our output. This ensures we avoid a zero price and minimize losses.
+This plan focuses on cautious adjustments while maximizing the chance of achieving a positive price in the next round

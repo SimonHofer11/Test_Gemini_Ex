@@ -1,0 +1,12 @@
+Plan in the next round:
+Objective: Maximize profit.
+Analysis:
+Round 1: The total quantity produced was 100, resulting in a price of 0. This means the market is highly sensitive to quantity.
+Round 2: By reducing the quantity to 25, we achieved a positive profit. This suggests that a lower quantity is more profitable in this scenario.
+Strategy:
+Reduce quantity further: Given the high sensitivity of the price to quantity, I will further reduce my quantity to see if it leads to a higher price and profit.
+Experiment with a quantity around 15: This is a significant reduction from the previous round, but it could potentially lead to a higher price.
+Expected Outcome:
+A higher price than the previous round, but potentially a lower profit if the reduction in quantity is too drastic.
+Continued learning about the market's sensitivity to quantity.
+Quantity for the next round: 15
