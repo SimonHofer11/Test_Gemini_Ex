@@ -3,13 +3,14 @@ IS_ON_GHA = Sys.info()['sysname'] != "Windows"
 example = function() {
   source("errors.R")
   source("gemini_run.R")
+  source("script_demand_profit.R")
 
   library(dplyr)
   library(jsonlite)
   #In Funktion: new_game: Generierung eines neuen Spiels
   #In Funktion: game_play_next_round(game): Dann das Spiel als solches
 
-  game = new_game(n_players=2, n_rounds = 10)
+  game = new_game(n_players=2, n_rounds = 5)
   # Runde einzeln durchlaufen lassen über diesen Command.
   #game = game_play_next_round(game)
 
@@ -25,7 +26,7 @@ example = function() {
 
 
 }
-example
+#example
 
 if (IS_ON_GHA) {
   # overwrite restore point
@@ -64,21 +65,17 @@ new_player_df = function(i, n_rounds) {
   tibble(
     i = i,
     t = 1:n_rounds,
-    #Hier Preis noch einfügen, welcher ermittelt wird
     p = rep(NA_real_, n_rounds),
-    #Hier Menge des Players i aus jeder runde eintragen
     q = rep(NA_real_, n_rounds),
-    #Hier Profit eines Spielers einfügen
     pi = rep(NA_real_, n_rounds),
-    #Hier den ermittelten Plan der Gemini Antwort eintragen
+    Q_other = rep(NA_real_, n_rounds),
+    Q = rep(NA_real_, n_rounds),
     plan = rep("", n_rounds),
-    #Hier die bisherigen Pläne einfügn
     hist_text = rep("", n_rounds),
-    plan_prompt = rep("", n_rounds),
+    #plan_prompt = rep("", n_rounds),
     q_prompt = rep("", n_rounds),
     strategy_prompt = rep("", n_rounds)
   )
-
 }
 #kreiert neues Spielobjekt, erster Call
 new_game = function(n_players, n_rounds, temperatures=rep(1, n_players)) {
@@ -91,13 +88,32 @@ new_game = function(n_players, n_rounds, temperatures=rep(1, n_players)) {
     #Erklärung: n_rounds wird als Parameter an Funktion new_player_df weitergegeben
     player_dfs = lapply(1:n_players,new_player_df, n_rounds=n_rounds)
   )
+  #Resultate der test Konversation miteinbringen
+  if(!IS_ON_GHA & n_players==2 & n_rounds == 5){
+    test_conv_results = read.csv("C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/Other/test_conversation/market_results_test_conversation.csv", sep = ";")
+    p_1_values = test_conv_results %>% 
+      filter( Spieler == 1)
+    p_2_values = test_conv_results %>% 
+      filter( Spieler == 2)
+
+    game$player_dfs[[1]]$p = p_1_values$p
+    game$player_dfs[[1]]$q = p_1_values$q
+    game$player_dfs[[1]]$pi = p_1_values$pi
+    game$player_dfs[[1]]$Q_other = p_1_values$Q_other
+    
+    
+    game$player_dfs[[2]]$p = p_2_values$p
+    game$player_dfs[[2]]$q = p_2_values$q
+    game$player_dfs[[2]]$pi = p_2_values$pi
+    game$player_dfs[[1]]$Q_other = p_1_values$Q_other
+    
+    }
   game
 }
 
 game_play_next_round = function(game) {
   restore.point("game_play_next_round")
   # Check if finished
-  #Hier noch beenden des Spiels anfügen
 
   game$cur_round = game$cur_round + 1
 
@@ -105,12 +121,9 @@ game_play_next_round = function(game) {
   i = 1
   for (i in 1:game$n_players) {
     game = player_make_history_text(game, i)
-
-    game = player_make_plan_prompt(game, i)
     game = player_make_strategy_prompt(game,i)
+    #game = player_make_plan_prompt(game, i)
     game = player_run_plan_prompt(game, i)
-
-    # TO DO
     game = player_make_q_prompt(game, i)
     game = player_run_q_prompt(game, i)
   }
@@ -124,19 +137,18 @@ game_play_next_round = function(game) {
 player_run_plan_prompt = function(game, i, attempt=1, max_attempts = 10) {
   restore.point("player_run_plan_prompt")
   t = game$cur_round
-  player_make_strategy_prompt(game,i)
   df = game$player_dfs[[i]]
   prompt = df$strategy_prompt[t]
   
   if(IS_ON_GHA){
-    #TO-DO Hier noch überprüfen ob geht
+    #TO-DO Hier noch überprüfen ob geht bzw Funktion schreiben
     res = run_text_prompt(prompt, max_tries)
     #TO-DO: zudem format so machen dass in Variable nur text steht und in res$text gespeichert wird
   } else{
     res = list(
       ok = TRUE,
       #hier dann prompt übergeben
-      text = "-- I am the plan --"
+      text = "--Here is the plan for the next round--"
     )
 
   }
@@ -158,31 +170,75 @@ player_run_plan_prompt = function(game, i, attempt=1, max_attempts = 10) {
 
 }
 
-###Kann man  deleten--< durch strategy_prompt ersetzt
-player_make_plan_prompt = function(game, i) {
-  restore.point("player_run_plan_prompt")
-  df = game$player_dfs[[i]]
-  t = game$cur_round
-  
-  #To Do:
-  #Make Strategy prompt übergeben
-  prompt = paste0("-- PLAN PROMPT FOR i = ",i," t = ", t)
 
-  df$plan_prompt[t] = prompt
-  game$player_dfs[[i]] = df
-  game
-}
+# 
+# #####Kann weg??
+# ###hie rprompt an gemini übergeben
+# player_make_plan_prompt = function(game, i) {
+#   restore.point("player_run_plan_prompt")
+#   df = game$player_dfs[[i]]
+#   t = game$cur_round
+#   #Strategy prompt:
+#   prompt = df$strategy_prompt[t]
+# 
+#   if (IS_ON_GHA) {
+#     #Hier dann Funktion schreiben mit run_gemini, welche den command übergibt. und Antwort dann einspeicher
+#     res = run_json_prompt(prompt, max_tries)
+#     #Muss dann die JSON übernehme
+#   } else {
+#     res = list(
+#       ok = TRUE,
+#       #Hier noch ggf anpassen mit test_conversation rn_pn_strategy_response, aber nicht notwendig
+#       text = paste0("-- PLAN PROMPT FOR i = ",i," t = ", t)
+#     )
+#   }
+#   #TO DO: hier dann die Funktion um q aus res zu extrahieren
+#   q = NULL
+#   if (res$ok) {
+#     q = try({
+#       obj = text
+#       #as.numeric(obj$q)
+#     })
+#   }
+#   ###Debugging nochmals checken
+#   # Possible errors
+#   #is_err = !res$ok & is(q,"try-error")
+#   #if (!is_err) {
+#   #  is_err = is.na(q)
+#   #}
+#   is_err = FALSE
+#   if (is_err) {
+#     if (attempt > max_attempts) {
+#       # Build that function which stops all
+#       stop_game(game, "Error in make strategy")
+#     }
+#     game = player_run_q_prompt(game,i,attempt=attempt+1)
+#     return(game)
+#   }
+#   
+#   
+#   #resultat
+#   df$plan_prompt[t] = prompt
+#   game$player_dfs[[i]] = df
+#   game
+#   
+#   #######
+#   
+# 
+#   
+#   
+# }
 
 #XXX
 player_make_q_prompt = function(game, i){
   #muss template erhalten, zusätzlich: infos aus hist_text sowie strategy_prompt einbetten
-  
+  #Ergibt noch gar keinen Sinn, muss hier den Plan vom Gemini übergeben
   restore.point("player_make_q_prompt")
   df = game$player_dfs[[i]]
   t = game$cur_round
   #Doppelte Klammer?
   hist_text = df$hist_text[[t]]
-  strategy_text = df$strategy_prompt[[t]]
+  plan_text = ""
   #To Do:
   #Make Strategy prompt übergeben
   
@@ -209,7 +265,7 @@ player_make_q_prompt = function(game, i){
     "}\n\n",
     hist_text, "\n\n", 
     "Additionally, I provide you with a plan which you wrote to figure out the quantity you want to provide in this round:", "\n\n", 
-    strategy_text, "\n\n", 
+    plan_text, "\n\n", 
     "Based on These information, I would like you to simulate what quantity a participant might choose in the next round to maximize profit, considering the provided rules.\n",
     "You don't need to actually participate in the experiment or make a decision— just simulate what could happen if a participant followed these rules.\n",
     "Simply write the quantity for the next round without explanation/justification in JSON-format:\n",
@@ -240,7 +296,8 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10) {
   } else {
     res = list(
       ok = TRUE,
-      text = '{"q": 32.5}'
+      text = paste0('{"q": ',df$q[t], '}')
+      #XXX
     )
   }
   #TO DO: hier dann die Funktion um q aus res zu extrahieren
@@ -283,15 +340,20 @@ player_make_history_text = function(game, i) {
   # Build history text from past prices, q and profits for the player
 
   #hist_text = "-- I WILL BE THE HISTORY TEXT--" # TO DO
-  hist_text = "Furthermore, to help you, we have listed the quantities you have placed so far, the resulting market prices and your profits:\n\n"
-  
-  for (round in 1:(t-1)) {
-    # Add the results of each round to the history text
-    hist_text = paste0(hist_text,
-                       "Round ", round, ":\n",
-                       "Your quantity: ", df$q[round], "\n",
-                       "Market price: ", round(df$p[round], 2), "\n",
-                       "Your profit: ", round(df$pi[round], 2), "\n\n")
+  if(t==1){
+    hist_text = ""
+  } else {
+    hist_text = "Furthermore, to help you, we have listed the quantities you have placed so far, the resulting market prices and your profits:\n\n"
+    
+    for (round in 1:(t-1)) {
+      # Add the results of each round to the history text
+      hist_text = paste0(hist_text,
+                         "Round ", round, ":\n",
+                         "Your quantity: ", df$q[round], "\n",
+                         "Market price: ", round(df$p[round], 2), "\n",
+                         "Quantity of the other firms: ",df$Q_other[round], "\n",
+                         "Your profit: ", round(df$pi[round], 2), "\n\n")
+    }
   }
   
   df$hist_text[t] = hist_text
@@ -345,7 +407,7 @@ player_make_strategy_prompt = function(game,i){
   game
   
 }
-
+###Kann weg?
 make_strategy_prompt = function(game,i) {
   
 }
