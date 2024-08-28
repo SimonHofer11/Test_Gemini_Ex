@@ -20,5 +20,5 @@ simulate_period <- function(q_i, q_others) {
   Q_total <- sum(q_others) + q_i
   price = price_function(Q_total)
   Q_other = sum(q_others)
-  return(list(profit = profit, price = price, Q_other = Q_other, Q_total = Q_total))
+  return(list(pi = profit, price = price, Q_other = Q_other, Q_total = Q_total))
 }
