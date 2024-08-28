@@ -11,7 +11,7 @@ example = function() {
   #In Funktion: new_game: Generierung eines neuen Spiels
   #In Funktion: game_play_next_round(game): Dann das Spiel als solches
 
-  game = new_game(n_players=2, n_rounds = 5)
+  game = new_game(n_players=3, n_rounds = 10)
   # Runde einzeln durchlaufen lassen über diesen Command.
   #game = game_play_next_round(game)
 
@@ -67,7 +67,7 @@ new_player_df = function(i, n_rounds) {
     i = i,
     t = 1:n_rounds,
     p = rep(NA_real_, n_rounds),
-    q = rep(NA_real_, n_rounds),
+    q = rep(0, n_rounds),
     pi = rep(NA_real_, n_rounds),
     Q_other = rep(NA_real_, n_rounds),
     Q = rep(NA_real_, n_rounds),
