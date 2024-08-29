@@ -3,6 +3,7 @@ MIN_SEC_PER_PROMPT = 5 # Minimum number of seconds between prompts
 
 
 perform_analysis = function() {
+  #Hier finden die ganzen Anpassungen statt, inklusive Einbindung ai_mod, errors, script_demand_profit,etc.
   library(dplyr)
 
   start_time = as.numeric(Sys.time())
