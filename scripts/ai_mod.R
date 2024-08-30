@@ -5,15 +5,12 @@ example = function() {
   source("errors.R")
   source("gemini_run.R")
   source("script_demand_profit.R")
+  source("gemini_analysis_oligopoly.R")
+  source("gemini_tools_oligopoly.R")
 
   library(dplyr)
   library(jsonlite)
-  #In Funktion: new_game: Generierung eines neuen Spiels
-  #In Funktion: game_play_next_round(game): Dann das Spiel als solches
-
   game = new_game(n_players=3, n_rounds = 10)
-  # Runde einzeln durchlaufen lassen über diesen Command.
-  #game = game_play_next_round(game)
 
   # if error call
   traceback()
@@ -39,6 +36,11 @@ if (IS_ON_GHA) {
 }
 
 run_game = function(game, debug_mode=TRUE) {
+  if (IS_ON_GHA){
+    API_KEY = Sys.getenv("API_KEY")
+    setwd("~")
+    outdir = "/root/output"
+  }
 #Wenn noch Runden zu spielen sind: aktiviere Fkt: game_play_next_round:
   if (debug_mode) {
     while(game$cur_round < game$n_rounds) {
@@ -131,13 +133,25 @@ player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10) {
   prompt = df$strategy_prompt[t]
   
   if(IS_ON_GHA){
-    #TO-DO Hier noch überprüfen ob geht bzw Funktion schreiben
-    res = run_text_prompt(prompt, max_tries)
-    #TO-DO: zudem format so machen dass in Variable nur text steht und in res$text gespeichert wird
+    
+    res = run_gemini(prompt,api_key, model="gemini-1.5-flash", json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
+    cur_time = as.numeric(Sys.time())
+    
+    if (cur_time - start_time > MAX_RUNTIME_SEC) {
+      cat("\nStop because total runtime exceeded ", MAX_RUNTIME_SEC, " seconds.\n")
+      return()
+    }
+    wait_sec = MIN_SEC_PER_PROMPT-(cur_time - prompt_start_time)
+    if (wait_sec > 0) {
+      cat("\nWait for ", round(wait_sec), "seconds...")
+      Sys.sleep(wait_sec)
+    }
+    Sys.sleep(5)
+    
+    
   } else{
     res = list(
       ok = TRUE,
-      #hier dann prompt übergeben
       text = "--Here is the plan for the next round--"
     )
 
@@ -160,78 +174,18 @@ player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10) {
 }
 
 
-# 
-# #####Kann weg??
-# ###hie rprompt an gemini übergeben
-# player_make_plan_prompt = function(game, i) {
-#   restore.point("player_run_strategy_prompt")
-#   df = game$player_dfs[[i]]
-#   t = game$cur_round
-#   #Strategy prompt:
-#   prompt = df$strategy_prompt[t]
-# 
-#   if (IS_ON_GHA) {
-#     #Hier dann Funktion schreiben mit run_gemini, welche den command übergibt. und Antwort dann einspeicher
-#     res = run_json_prompt(prompt, max_tries)
-#     #Muss dann die JSON übernehme
-#   } else {
-#     res = list(
-#       ok = TRUE,
-#       #Hier noch ggf anpassen mit test_conversation rn_pn_strategy_response, aber nicht notwendig
-#       text = paste0("-- PLAN PROMPT FOR i = ",i," t = ", t)
-#     )
-#   }
-#   #TO DO: hier dann die Funktion um q aus res zu extrahieren
-#   q = NULL
-#   if (res$ok) {
-#     q = try({
-#       obj = text
-#       #as.numeric(obj$q)
-#     })
-#   }
-#   ###Debugging nochmals checken
-#   # Possible errors
-#   #is_err = !res$ok & is(q,"try-error")
-#   #if (!is_err) {
-#   #  is_err = is.na(q)
-#   #}
-#   is_err = FALSE
-#   if (is_err) {
-#     if (attempt > max_attempts) {
-#       # Build that function which stops all
-#       stop_game(game, "Error in make strategy")
-#     }
-#     game = player_run_q_prompt(game,i,attempt=attempt+1)
-#     return(game)
-#   }
-#   
-#   
-#   #resultat
-#   df$plan_prompt[t] = prompt
-#   game$player_dfs[[i]] = df
-#   game
-#   
-#   #######
-#   
-# 
-#   
-#   
-# }
-
-#XXX
 player_make_q_prompt = function(game, i){
-  #muss template erhalten, zusätzlich: infos aus hist_text sowie strategy_prompt einbetten
-  #Ergibt noch gar keinen Sinn, muss hier den Plan vom Gemini übergeben
+  
   restore.point("player_make_q_prompt")
   df = game$player_dfs[[i]]
   t = game$cur_round
-  #Doppelte Klammer?
   hist_text = df$hist_text[[t]]
-  strategy_response_text = ""
-  #To Do:
-  #Make Strategy prompt übergeben
-  
-  #####
+  if(IS_ON_GHA){
+    strategy_response_text = df$strategy_response[[t]]
+  } else {
+    strategy_response_text = ""
+  }
+
   # Define the template with the history text included
   if(game$n_players==2){
     prompt <- paste0(
@@ -292,8 +246,6 @@ player_make_q_prompt = function(game, i){
   }
   
   
-  #prompt = paste0("-- PLAN PROMPT FOR i = ",i," t = ", t)
-  
   df$q_prompt[t] = prompt
   game$player_dfs[[i]] = df
   game
@@ -309,18 +261,17 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10) {
   prompt = df$q_prompt[[t]]
 
   if (IS_ON_GHA) {
-    #Hier Stop: Run_Gemini hier dann übergeben, evtl mit max tries noch bearbeiten
-    #Hier dann Funktion schreiben mit run_gemini, welche den command übergibt.
-    res = run_json_prompt(prompt, max_tries)
-    #Muss dann die JSON übernehme
+
+    res = run_gemini(prompt,api_key, model="gemini-1.5-flash", temperature= 1)
+    Sys.sleep(5)
+    
   } else {
     res = list(
       ok = TRUE,
       text = paste0('{"q": ',df$q[t], '}')
-      #XXX
+      
     )
   }
-  #TO DO: hier dann die Funktion um q aus res zu extrahieren
   q = NULL
   if (res$ok) {
     q = try({
@@ -456,29 +407,6 @@ player_make_strategy_prompt = function(game,i){
   
 }
 
-#Offene Funktionen, entweder gar nicht gebrauchbar oder noch einzupflegen in Projekt
-
-# ###Kann weg?
-# make_strategy_prompt = function(game,i) {
-#   
-# }
-# 
-# make_q_prompt = function(player, round, history_text, strategy) {
-#   # prompt to induce AI to return json with quantity
-#   # {q: quantity as numeric}
-# 
-# }
-# 
-# play_player_round = function(player, round,...) {
-#   prev_strategy = get_prev_strategy(player, round)
-#   hist_text = make_history_text(...)
-# 
-#   strat_prompt = make_strategy_prompt(player, round, history_text)
-# 
-# }
-
-
-
 
 game_compute_round_results= function(game){
   df = game$player_dfs
@@ -503,3 +431,94 @@ game_compute_round_results= function(game){
   
   #soll dann am Ende: Q, Q_other, pi und p berechnen
 }
+
+
+
+
+
+
+#Offene Funktionen, entweder gar nicht gebrauchbar oder noch einzupflegen in Projekt
+
+# ###Kann weg?
+# make_strategy_prompt = function(game,i) {
+#   
+# }
+# 
+# make_q_prompt = function(player, round, history_text, strategy) {
+#   # prompt to induce AI to return json with quantity
+#   # {q: quantity as numeric}
+# 
+# }
+# 
+# play_player_round = function(player, round,...) {
+#   prev_strategy = get_prev_strategy(player, round)
+#   hist_text = make_history_text(...)
+# 
+#   strat_prompt = make_strategy_prompt(player, round, history_text)
+# 
+# }
+
+
+
+
+
+
+# 
+# #####Kann weg??
+# ###hie rprompt an gemini übergeben
+# player_make_plan_prompt = function(game, i) {
+#   restore.point("player_run_strategy_prompt")
+#   df = game$player_dfs[[i]]
+#   t = game$cur_round
+#   #Strategy prompt:
+#   prompt = df$strategy_prompt[t]
+# 
+#   if (IS_ON_GHA) {
+#     #Hier dann Funktion schreiben mit run_gemini, welche den command übergibt. und Antwort dann einspeicher
+#     res = run_json_prompt(prompt, max_tries)
+#     #Muss dann die JSON übernehme
+#   } else {
+#     res = list(
+#       ok = TRUE,
+#       #Hier noch ggf anpassen mit test_conversation rn_pn_strategy_response, aber nicht notwendig
+#       text = paste0("-- PLAN PROMPT FOR i = ",i," t = ", t)
+#     )
+#   }
+#   #TO DO: hier dann die Funktion um q aus res zu extrahieren
+#   q = NULL
+#   if (res$ok) {
+#     q = try({
+#       obj = text
+#       #as.numeric(obj$q)
+#     })
+#   }
+#   ###Debugging nochmals checken
+#   # Possible errors
+#   #is_err = !res$ok & is(q,"try-error")
+#   #if (!is_err) {
+#   #  is_err = is.na(q)
+#   #}
+#   is_err = FALSE
+#   if (is_err) {
+#     if (attempt > max_attempts) {
+#       # Build that function which stops all
+#       stop_game(game, "Error in make strategy")
+#     }
+#     game = player_run_q_prompt(game,i,attempt=attempt+1)
+#     return(game)
+#   }
+#   
+#   
+#   #resultat
+#   df$plan_prompt[t] = prompt
+#   game$player_dfs[[i]] = df
+#   game
+#   
+#   #######
+#   
+# 
+#   
+#   
+# }
+
+#XXX
