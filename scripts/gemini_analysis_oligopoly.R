@@ -20,8 +20,8 @@ perform_analysis = function() {
 
   source("scripts/gemini_tools.R")
   source("scripts/ai_mod.R")
-  source("script_demand_profit.R")
-  source("errors.R")
+  source("scripts/script_demand_profit.R")
+  source("scripts/errors.R")
   
   library(dplyr)
   library(jsonlite)
