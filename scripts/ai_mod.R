@@ -259,6 +259,7 @@ player_make_q_prompt = function(game, i){
 
 
 player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, start_time) {
+  library(jsonlite)
   restore.point("player_run_q_prompt")
   t = game$cur_round
   df = game$player_dfs[[i]]
@@ -319,8 +320,8 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
   cat("\n druch q prompt durch\n")
   cat("hier q prompt: ",res$candidates[[1]][[1]][[1]][["text"]],".\n")
   clean_q <- gsub("^json ", "", q)
-  cat("hier q prompt: ",clean_q,".\n")
-  df$q[[t]] = clean_q
+  cat("hier q prompt: ",fromJSON(clean_q),".\n")
+  df$q[[t]] = fromJSON(clean_q)
   game$player_dfs[[i]] = df
   game
 
