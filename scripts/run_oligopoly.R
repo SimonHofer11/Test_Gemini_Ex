@@ -65,8 +65,8 @@ is_local <- function(is_local = TRUE) {
   }
 }
 
-is_local()
-#is_local(FALSE)
+#is_local()
+is_local(FALSE)
 
 
 
