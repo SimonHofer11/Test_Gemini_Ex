@@ -318,8 +318,9 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
   }
   cat("\n druch q prompt durch\n")
   cat("hier q prompt: ",res$candidates[[1]][[1]][[1]][["text"]],".\n")
-  cat("hier q prompt: ",fromJSON(q),".\n")
-  df$q[[t]] = q
+  clean_q <- gsub("^json ", "", q)
+  cat("hier q prompt: ",clean_q,".\n")
+  df$q[[t]] = clean_q
   game$player_dfs[[i]] = df
   game
 
