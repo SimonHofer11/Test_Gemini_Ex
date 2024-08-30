@@ -37,7 +37,7 @@ is_local <- function(is_local = TRUE) {
     if (!FALSE) {
     
       source("~/scripts/gemini_analysis_oligopoly.R")
-      perform_analysis()
+      perform_analysis(n_players = 2, n_rounds = 25 )
     }
     
     if (FALSE) {
