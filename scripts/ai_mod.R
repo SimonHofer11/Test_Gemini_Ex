@@ -218,7 +218,7 @@ player_make_q_prompt = function(game, i){
       "Based on These information, I would like you to simulate what quantity a participant might choose in the next round to maximize profit, considering the provided rules.\n",
       "You don't need to actually participate in the experiment or make a decision— just simulate what could happen if a participant followed these rules.\n",
       "Simply write the quantity for the next round without explanation/justification in JSON-format:\n",
-      "{'q': <fill in quantity here>}"
+      '{"q": <fill in quantity here>}'
     )
   } else {
     prompt <- paste0(
@@ -246,7 +246,7 @@ player_make_q_prompt = function(game, i){
       "Based on These information, I would like you to simulate what quantity a participant might choose in the next round to maximize profit, considering the provided rules.\n",
       "You don't need to actually participate in the experiment or make a decision— just simulate what could happen if a participant followed these rules.\n",
       "Simply write the quantity for the next round without explanation/justification in JSON-format:\n",
-      "{'q': <fill in quantity here>}"
+      '{"q": <fill in quantity here>}'
     )
   }
   
