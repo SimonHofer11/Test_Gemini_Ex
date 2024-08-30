@@ -274,7 +274,7 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
   
     res = run_gemini(prompt,api_key, model="gemini-1.5-flash", json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
     cur_time = as.numeric(Sys.time())
-    
+    res$ok = TRUE
     Sys.sleep(5)
     if (cur_time - start_time > MAX_RUNTIME_SEC) {
       cat("\nStop because total runtime exceeded ", MAX_RUNTIME_SEC, " seconds.\n")
@@ -291,9 +291,12 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
     )
   }
   q = NULL
+  
+  
   if (res$ok) {
     q = try({
-      obj = fromJSON(res$text)
+      obj = fromJSON(res$candidates[[1]][[1]][[1]][["text"]])
+      #obj = fromJSON(res$res$text])
       as.numeric(obj$q)
     })
   }
@@ -312,7 +315,9 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
     game = player_run_q_prompt(game,i,attempt=attempt+1)
     return(game)
   }
-
+  cat("\n druch q prompt durch\n")
+  cat("hier q prompt: ",res$candidates[[1]][[1]][[1]][["text"]],".\n")
+  cat("hier q prompt: ",q,".\n")
   df$q[[t]] = q
   game$player_dfs[[i]] = df
   game
