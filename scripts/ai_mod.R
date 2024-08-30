@@ -292,7 +292,11 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
   
   if (res$ok) {
     q = try({
-      obj = fromJSON(res$candidates[[1]][[1]][[1]][["text"]])
+      
+
+      # Bereinigen des Strings von unerwünschten Zeichen
+      obj <- fromJSON(gsub("```json |```", "", res$candidates[[1]][[1]][[1]][["text"]]))
+      #obj = fromJSON(res$candidates[[1]][[1]][[1]][["text"]])
       #obj = fromJSON(res$text)
       as.numeric(obj$q)
     })
