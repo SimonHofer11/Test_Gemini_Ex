@@ -169,8 +169,13 @@ player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10, api
     return(game)
   }
   cat("\n hier übergeben wir den Text unserem Game Objekt in Runde: ",t," .\n")
+  cat("\n print von res$text: ",res$text," .\n")
+  cat("\n print von res$json: ",res$json," .\n")
+  cat("\n Anderer Ansatz von res$candidates..: ",res$candidates[[1]][[1]][[1]][["text"]]," .\n")
+  
+  
   #Her dann den Text aufnehmen von Gemini, ggf. hier Anpassungen treffen
-  df$strategy_response[[t]] = res$text
+  df$strategy_response[[t]] = res$candidates[[1]][[1]][[1]][["text"]]
 
   game$player_dfs[[i]] = df
   game
