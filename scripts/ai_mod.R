@@ -141,11 +141,11 @@ player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10, api
       cat("\nStop because total runtime exceeded ", MAX_RUNTIME_SEC, " seconds.\n")
       return()
     }
-    wait_sec = MIN_SEC_PER_PROMPT-(cur_time - prompt_start_time)
-    if (wait_sec > 0) {
-      cat("\nWait for ", round(wait_sec), "seconds...")
-      Sys.sleep(wait_sec)
-    }
+    #wait_sec = MIN_SEC_PER_PROMPT-(cur_time - prompt_start_time)
+    #if (wait_sec > 0) {
+    #  cat("\nWait for ", round(wait_sec), "seconds...")
+    #  Sys.sleep(wait_sec)
+    #}
     Sys.sleep(5)
     
     
@@ -262,8 +262,17 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
 
   if (IS_ON_GHA) {
 
-    res = run_gemini(prompt,api_key, model="gemini-1.5-flash", temperature= 1)
+  
+    res = run_gemini(prompt,api_key, model="gemini-1.5-flash", json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
+    cur_time = as.numeric(Sys.time())
+    
     Sys.sleep(5)
+    if (cur_time - start_time > MAX_RUNTIME_SEC) {
+      cat("\nStop because total runtime exceeded ", MAX_RUNTIME_SEC, " seconds.\n")
+      return()
+    
+    }
+    
     
   } else {
     res = list(
