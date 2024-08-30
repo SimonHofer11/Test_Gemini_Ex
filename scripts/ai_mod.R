@@ -136,6 +136,7 @@ player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10, api
     cat("\nVor Strategy Prompt in Runde :",t,".\n")
     res = run_gemini(prompt,api_key, model="gemini-1.5-flash", json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
     cat("\nDurch Strategy Prompt in Runde :",t,".\n")
+    res$ok = TRUE
     cur_time = as.numeric(Sys.time())
     
     if (cur_time - start_time > MAX_RUNTIME_SEC) {
@@ -157,6 +158,7 @@ player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10, api
     )
 
   }
+  cat("\nres ok: ",res$ok," .\n")
 
   if (!res$ok) {
     if (attempt > max_attempts) {
@@ -166,6 +168,7 @@ player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10, api
     game = player_run_strategy_prompt(game,i,attempt=attempt+1)
     return(game)
   }
+  cat("\n hier übergeben wir den Text unserem Game Objekt in Runde: ",t," .\n")
   #Her dann den Text aufnehmen von Gemini, ggf. hier Anpassungen treffen
   df$strategy_response[[t]] = res$text
 
