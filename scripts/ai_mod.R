@@ -35,7 +35,7 @@ if (IS_ON_GHA) {
   #restore.point.options(display.restore.point = TRUE)
 }
 
-run_game = function(game, debug_mode=TRUE) {
+run_game = function(game, debug_mode=TRUE, start_time) {
   if (IS_ON_GHA){
     API_KEY = Sys.getenv("API_KEY")
     setwd("~")
@@ -44,14 +44,14 @@ run_game = function(game, debug_mode=TRUE) {
 #Wenn noch Runden zu spielen sind: aktiviere Fkt: game_play_next_round:
   if (debug_mode) {
     while(game$cur_round < game$n_rounds) {
-      game = game_play_next_round(game)
+      game = game_play_next_round(game, api_key = API_KEY, start_time = start_time)
     }
 
   } else {
     # Later the main loop
     res = try({
       while(game$cur_round < game$n_rounds) {
-        game = game_play_next_round(game)
+        game = game_play_next_round(game, api_key = API_KEY, start_time = start_time)
       }
     }, silent=TRUE)
     if (is(res, "try-error")) {
@@ -103,7 +103,7 @@ new_game = function(n_players, n_rounds, temperatures=rep(1, n_players)) {
   game
 }
 
-game_play_next_round = function(game) {
+game_play_next_round = function(game, api_key, start_time) {
   restore.point("game_play_next_round")
   # Check if finished
 
@@ -115,9 +115,9 @@ game_play_next_round = function(game) {
     game = player_make_history_text(game, i)
     game = player_make_strategy_prompt(game,i)
     #game = player_make_plan_prompt(game, i)
-    game = player_run_strategy_prompt(game, i)
+    game = player_run_strategy_prompt(game, i, api_key = api_key, start_time = start_time)
     game = player_make_q_prompt(game, i)
-    game = player_run_q_prompt(game, i)
+    game = player_run_q_prompt(game, i, api_key = api_key, start_time = start_time)
   }
 
   # Computes prices and profits
@@ -126,7 +126,7 @@ game_play_next_round = function(game) {
   game
 }
 
-player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10) {
+player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, start_time) {
   restore.point("player_run_strategy_prompt")
   t = game$cur_round
   df = game$player_dfs[[i]]
@@ -253,7 +253,7 @@ player_make_q_prompt = function(game, i){
 
 
 
-player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10) {
+player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, start_time) {
   restore.point("player_run_q_prompt")
   t = game$cur_round
   df = game$player_dfs[[i]]

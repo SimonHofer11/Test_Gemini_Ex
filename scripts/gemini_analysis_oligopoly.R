@@ -31,7 +31,7 @@ perform_analysis = function() {
   
   game = new_game(n_players=2, n_rounds = 10)
   traceback()
-  game = run_game(game, debug_mode = FALSE)
+  game = run_game(game, debug_mode = FALSE, start_time=start_time)
   game$ok
   game$err_msg
   
