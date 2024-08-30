@@ -1,6 +1,6 @@
 IS_ON_GHA = Sys.info()['sysname'] != "Windows"
-getwd()
-setwd("C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/scripts")
+#getwd()
+#setwd("C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/scripts")
 example = function() {
   source("errors.R")
   source("gemini_run.R")
