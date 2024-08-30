@@ -1,0 +1,52 @@
+Vorgehen Integration in GitHub Projekt:
+->von allem eine Kopie file erstellen
+
+-> Dann alles piece by piece an meinen Use Case anpassen
+->Hier die instructions
+->Bei ai.mod etc. dann Verzeichnis auch noch anpassen
+-> So integrieren, dass ich run_game ausführe, und in diesem wiederrum die ganzen Funktionen integriert sind.
+
+
+1. load_prompt->sollte bleiben
+2.prompt files -> Ändern
+3.analyse_prompt_file (vlt schauen in welchem Format alles zurückgegeben wird)
+run_gemini dann ausführen innerhalb meiner new_game_funktion()
+
+
+Vorgehen:
+
+bei workflow dann run_gemini_oligopoly workflow laufen lassen.
+
+dann run_oligopoly ausführen:
+diese soll bei !FALSE dann  als source von
+gemini_analysis_oligopoly die FKT perform_analysis() ausführen
+
+
+was muss ich ändern/wie funktioniert perform_analysis():
+
+-
+1. load_prompt_configs():
+Diese Funktion durchsucht ein Verzeichnis (config) nach .yml-Dateien, lädt deren Inhalt, fügt sie zusammen und gibt das Ergebnis als DataFrame zurück. Jeder Datensatz im DataFrame enthält eine Spalte, die den Dateinamen der ursprünglichen YAML-Datei ohne Erweiterung (prompt_type) angibt
+-
+
+-
+2. ÄNDERN: prompt_files: hier momentan die .txt files, die als prompts entnommen werden. Bei mir: die Game-Elemente: run_q_prompt / run_strategy_prompt
+Vermutlich diesen ganzen Teil entfernen und einfach game Elemente an Funktionen analyse_prompt_file übergeben?
+-
+
+-
+3.ÄNDERN: analyse_prompt_file:
+nimmt prompt und führt get_prompt_config durch: 
+Die Funktion get_prompt_config sucht die spezifische Konfiguration für eine gegebene Datei (file) in einem DataFrame (config_df). Falls eine exakte Übereinstimmung oder ein Präfix gefunden wird, kombiniert die Funktion die spezifische Konfiguration mit einer Standardkonfiguration. Falls keine Übereinstimmung gefunden wird, wird die unveränderte Standardkonfiguration zurückgegeben.
+-
+
+-
+Führt dann run_gemini aus
+->bei uns dann run_gemini_oligopoly?
+Vlt doch auch einfach ausführen lassen?
+
+
+bei IS_ON_GHA
+Am Ende soll es den DF als .Rds zurückgeben.
+mit saveRDS und out file sollte das gut machbar sein
+

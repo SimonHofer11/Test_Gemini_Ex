@@ -309,6 +309,7 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10) {
   prompt = df$q_prompt[[t]]
 
   if (IS_ON_GHA) {
+    #Hier Stop: Run_Gemini hier dann übergeben, evtl mit max tries noch bearbeiten
     #Hier dann Funktion schreiben mit run_gemini, welche den command übergibt.
     res = run_json_prompt(prompt, max_tries)
     #Muss dann die JSON übernehme

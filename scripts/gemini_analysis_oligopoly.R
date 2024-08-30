@@ -19,9 +19,26 @@ perform_analysis = function() {
   }
 
   source("scripts/gemini_tools.R")
-
+  source("scripts/ai_mod.R")
+  source("script_demand_profit.R")
+  source("errors.R")
+  
+  library(dplyr)
+  library(jsonlite)
+  
   config_df = load_prompt_configs()
-
+  
+  
+  game = new_game(n_players=3, n_rounds = 10)
+  traceback()
+  game = run_game(game, debug_mode = FALSE)
+  game$ok
+  game$err_msg
+  
+  options(warn=2)
+    
+    
+  #Das kann dann hier weg.  
   prompt_files = list.files("prompts", glob2rx("*.txt"),full.names = TRUE)
   file = first(prompt_files)
 
