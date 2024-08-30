@@ -97,6 +97,8 @@ run_gemini = function(prompt,api_key, model="gemini-1.5-flash", json_mode=FALSE,
   res$model = model
   res$json_mode = json_mode
   res$temperature = temperature
+  #Test
+  res$ok = TRUE
   res
 
 }

@@ -133,8 +133,9 @@ player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10, api
   prompt = df$strategy_prompt[t]
   
   if(IS_ON_GHA){
-    
+    print(paste0("Vor Strategy Prompt in Runde :",t))
     res = run_gemini(prompt,api_key, model="gemini-1.5-flash", json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
+    print(paste0("Durch Strategy Prompt in Runde :",t))
     cur_time = as.numeric(Sys.time())
     
     if (cur_time - start_time > MAX_RUNTIME_SEC) {
