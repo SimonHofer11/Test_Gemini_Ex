@@ -291,18 +291,18 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
   q = NULL
   
   
-  if (res$ok) {
-    q = try({
+  #if (res$ok) {
+  #  q = try({
       
 
       # Bereinigen des Strings von unerwünschten Zeichen
       #obj <- fromJSON(gsub("```json |```", "", res$candidates[[1]][[1]][[1]][["text"]]))
-      obj = res$candidates[[1]][[1]][[1]][["text"]]
+      #obj = res$candidates[[1]][[1]][[1]][["text"]]
       #obj = fromJSON(res$text)
       
-      as.numeric(obj$q)
-    })
-  }
+      #as.numeric(obj$q)
+    #})
+  #}
 
   # Possible errors
   is_err = !res$ok & is(q,"try-error")
@@ -321,8 +321,8 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
   cat("\n druch q prompt durch\n")
   cat("hier q prompt: ",res$candidates[[1]][[1]][[1]][["text"]],".\n")
   #clean_q <- gsub("^json ", "", q)
-  cat("hier q prompt: ",q,".\n")
-  df$q[[t]] = q
+  cat("hier q prompt2: ",as.numeric(res$candidates[[1]][[1]][[1]][["text"]]),".\n")
+  df$q[[t]] = as.numeric(res$candidates[[1]][[1]][[1]][["text"]])
   game$player_dfs[[i]] = df
   game
 
