@@ -169,11 +169,7 @@ player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10, api
     return(game)
   }
   cat("\n hier übergeben wir den Text unserem Game Objekt in Runde: ",t," .\n")
-  cat("\n print von res$text: ",res$text," .\n")
-  cat("\n print von res$json: ",res$json," .\n")
-  cat("\n Anderer Ansatz von res$candidates..: ",res$candidates[[1]][[1]][[1]][["text"]]," .\n")
-  
-  
+
   #Her dann den Text aufnehmen von Gemini, ggf. hier Anpassungen treffen
   df$strategy_response[[t]] = res$candidates[[1]][[1]][[1]][["text"]]
 
@@ -276,6 +272,7 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
     cur_time = as.numeric(Sys.time())
     res$ok = TRUE
     Sys.sleep(5)
+    cat("\n so sieht q direkt nach ausführung von res aus: ",res$candidates[[1]][[1]][[1]][["text"]],"\n")
     if (cur_time - start_time > MAX_RUNTIME_SEC) {
       cat("\nStop because total runtime exceeded ", MAX_RUNTIME_SEC, " seconds.\n")
       return()
@@ -296,7 +293,7 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
   if (res$ok) {
     q = try({
       obj = fromJSON(res$candidates[[1]][[1]][[1]][["text"]])
-      #obj = fromJSON(res$res$text])
+      #obj = fromJSON(res$text)
       as.numeric(obj$q)
     })
   }
@@ -432,9 +429,12 @@ player_make_strategy_prompt = function(game,i){
 
 
 game_compute_round_results= function(game){
+  cat("\n in game compute round results angekommen\n")
   df = game$player_dfs
   t = game$cur_round
   Q = 0
+  cat("\n df[[i]]$q[[t]]: ",df[[1]]$q[[t]],"\n")
+  
   for (i in 1: game$n_players){
   Q = Q + df[[i]]$q[[t]]
   }
