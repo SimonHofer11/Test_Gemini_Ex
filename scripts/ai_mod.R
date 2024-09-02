@@ -254,7 +254,6 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
 
   
     res = run_gemini(prompt,api_key, model="gemini-1.5-flash", json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
-    cat("\n res$ok in ai_mod: ",res$ok,"\n")
     cur_time = as.numeric(Sys.time())
     #res$ok = TRUE
     Sys.sleep(5)
@@ -273,8 +272,8 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
   
   if (res$ok) {
     q = try({
-      obj = (res$candidates[[1]][[1]][[1]][["text"]])
-      as.numeric(obj$q)
+      #obj = (res$candidates[[1]][[1]][[1]][["text"]])
+      as.numeric(res$candidates[[1]][[1]][[1]][["text"]])
     })
   }
   
