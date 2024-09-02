@@ -142,8 +142,9 @@ load_prompt_configs = function() {
     res$prompt_type = prompt_type
     res = as.data.frame(res)
   }))
-  return(config_df)
   cat("\n nach load prompt configs in gemini_analysis_oligopoly.\n")
+  
+  return(config_df)
   
 }
 
