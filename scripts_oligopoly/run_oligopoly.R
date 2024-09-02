@@ -1,5 +1,6 @@
-N_PLAYERS = c(2) #c(2,3)
-N_ROUNDS = 3
+#Define the number of players (if you select several, the game will be repeated several times)
+N_PLAYERS = c(2,3) #c(2,3)
+N_ROUNDS = 2
 
 
 is_local <- function(is_local = TRUE) {
@@ -37,7 +38,16 @@ is_local <- function(is_local = TRUE) {
     if (!FALSE) {
       
       source("~/scripts_oligopoly/gemini_analysis_oligopoly.R")
-      perform_analysis(n_players = N_PLAYERS, n_rounds = N_ROUNDS )
+      results <- list() 
+      
+      for (i in 1:length(N_PLAYERS)) {
+        n_players <- N_PLAYERS[i]  
+        
+        result <- perform_analysis(n_players = n_players, n_rounds = N_ROUNDS)
+        
+        result_name <- paste0("game_", n_players, "_player")
+        results[[result_name]] <- result
+      }
     }
     
     if (FALSE) {
