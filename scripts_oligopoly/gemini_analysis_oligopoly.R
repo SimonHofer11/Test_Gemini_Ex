@@ -131,6 +131,7 @@ get_prompt_config = function(file, config_df) {
 }
 
 load_prompt_configs = function() {
+  cat("\n in load prompt configs in gemini_analysis_oligopoly.\n")
   library(stringi)
   library(dplyr)
 
@@ -142,5 +143,7 @@ load_prompt_configs = function() {
     res = as.data.frame(res)
   }))
   return(config_df)
+  cat("\n nach load prompt configs in gemini_analysis_oligopoly.\n")
+  
 }
 
