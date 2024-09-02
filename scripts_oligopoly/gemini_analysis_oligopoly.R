@@ -46,6 +46,8 @@ perform_analysis = function(n_players = 2, n_rounds = 25) {
   
 
 cat("\n\nFINISHED\n\n")
+
+}
   
 
 analyse_prompt_file = function(file, config_df,  api_key,verbose=TRUE, add_prompt=TRUE){
