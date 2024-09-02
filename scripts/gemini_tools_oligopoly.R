@@ -99,6 +99,7 @@ run_gemini = function(prompt,api_key, model="gemini-1.5-flash", json_mode=FALSE,
   res$temperature = temperature
   #Test
   res$ok = TRUE
+  cat("\n res$ok in run_gemini: ",res$ok,"\n")
   res
 
 }
