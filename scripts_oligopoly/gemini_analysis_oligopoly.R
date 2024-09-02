@@ -39,16 +39,12 @@ perform_analysis = function(n_players = 2, n_rounds = 25) {
   game$err_msg
   
   options(warn=2)
+  
+  
   cur_time = as.numeric(Sys.time())
-  
-  
+  #save in gemini_results
   results_dir <- "/gemini_results"
-  
-  # Verzeichnis erstellen, falls es nicht existiert
-  #if (!dir.exists(results_dir)) {
-  #  dir.create(results_dir, recursive = TRUE)
-  #}
-  
+
   cur_time <- as.numeric(Sys.time())
   out_file <- paste0(results_dir, "/", "oligopoly_experiment", cur_time, "_", n_players, "_Firmen.Rds")
   
@@ -58,8 +54,8 @@ perform_analysis = function(n_players = 2, n_rounds = 25) {
   
   
   
-  out_file = paste0(outdir, "/", "oligopoly_experiment",cur_time,"_",n_players,"_Firmen.Rds")
-  saveRDS(game, out_file)
+  out_file_root_output = paste0(outdir, "/", "oligopoly_experiment",cur_time,"_",n_players,"_Firmen.Rds")
+  saveRDS(game, out_file_root_output)
   
 
 cat("\n\nFINISHED\n\n")
