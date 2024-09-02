@@ -18,7 +18,8 @@ perform_analysis = function(n_players = 2, n_rounds = 25) {
   if (FALSE) {
     setwd("~/repbox/gemini/gemini_gha")
   }
-
+  message("still here")
+  cat("\nStill here\n")
   source("scripts/gemini_tools.R")
   source("scripts/ai_mod.R")
   source("scripts/script_demand_profit.R")
