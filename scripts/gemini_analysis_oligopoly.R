@@ -37,9 +37,9 @@ perform_analysis = function(n_players = 2, n_rounds = 25) {
   game$err_msg
   
   options(warn=2)
-  cur_time = as.numeric(Sys.time())
+  cur_time = Sys.Date()
 
-  out_file = paste0(outdir, "/", "oligopoly_experiment",cur_time,".Rds")
+  out_file = paste0(outdir, "/", "oligopoly_experiment",cur_time,"_2_Firmen.Rds")
   saveRDS(game, out_file)
   
 
