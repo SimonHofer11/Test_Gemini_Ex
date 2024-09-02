@@ -51,6 +51,12 @@ is_local <- function(is_local = TRUE) {
         result_name <- paste0("game_", n_players, "_player")
         results[[result_name]] <- result
       }
+      
+      setwd("~")
+      cur_time <- as.numeric(Sys.time())
+      outdir = "/root/output"
+      out_file_root_output = paste0(outdir, "/", "oligopoly_experiment",cur_time,"_",N_PLAYERS,"_Firmen.Rds")
+      saveRDS(results, out_file_root_output)
     }
     
     if (FALSE) {
