@@ -1,3 +1,6 @@
+N_PLAYERS = c(2) #c(2,3)
+N_ROUNDS = 3
+
 
 is_local <- function(is_local = TRUE) {
   if (is_local) {
@@ -32,9 +35,9 @@ is_local <- function(is_local = TRUE) {
     
   } else {
     if (!FALSE) {
-    
+      
       source("~/scripts_oligopoly/gemini_analysis_oligopoly.R")
-      perform_analysis(n_players = 2, n_rounds = 3 )
+      perform_analysis(n_players = N_PLAYERS, n_rounds = N_ROUNDS )
     }
     
     if (FALSE) {

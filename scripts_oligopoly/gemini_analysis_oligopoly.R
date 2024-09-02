@@ -40,7 +40,24 @@ perform_analysis = function(n_players = 2, n_rounds = 25) {
   
   options(warn=2)
   cur_time = as.numeric(Sys.time())
-
+  
+  
+  results_dir <- "/gemini_results"
+  
+  # Verzeichnis erstellen, falls es nicht existiert
+  #if (!dir.exists(results_dir)) {
+  #  dir.create(results_dir, recursive = TRUE)
+  #}
+  
+  cur_time <- as.numeric(Sys.time())
+  out_file <- paste0(results_dir, "/", "oligopoly_experiment", cur_time, "_", n_players, "_Firmen.Rds")
+  
+  # Beispiel: Objekt speichern
+  saveRDS(your_object, out_file)
+  
+  
+  
+  
   out_file = paste0(outdir, "/", "oligopoly_experiment",cur_time,"_",n_players,"_Firmen.Rds")
   saveRDS(game, out_file)
   
