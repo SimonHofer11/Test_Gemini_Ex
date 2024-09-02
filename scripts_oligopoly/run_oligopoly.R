@@ -37,10 +37,11 @@ is_local <- function(is_local = TRUE) {
   } else {
     if (!FALSE) {
       
-      source("~/scripts_oligopoly/gemini_analysis_oligopoly.R")
+      
       results <- list() 
       
       for (i in 1:length(N_PLAYERS)) {
+        source("~/scripts_oligopoly/gemini_analysis_oligopoly.R")
         cat("\n i = ",i,"\n")
         #cat("\n Objekt results: ",results,".\n")
         n_players <- N_PLAYERS[i]  
