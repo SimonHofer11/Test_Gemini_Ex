@@ -55,7 +55,11 @@ is_local <- function(is_local = TRUE) {
       setwd("~")
       cur_time <- as.numeric(Sys.time())
       outdir = "/root/output"
-      out_file_root_output = paste0(outdir, "/", "oligopoly_experiment",cur_time,"_",N_PLAYERS,"_Firmen.Rds")
+      n_players_str <- paste(N_PLAYERS, collapse = "_")
+      
+      out_file_root_output = paste0(outdir, "/", "oligopoly_experiment_", cur_time, "_", n_players_str, "_Firmen.Rds")
+      
+      
       saveRDS(results, out_file_root_output)
     }
     
