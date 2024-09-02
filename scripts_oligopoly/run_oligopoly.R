@@ -42,7 +42,7 @@ is_local <- function(is_local = TRUE) {
       
       for (i in 1:length(N_PLAYERS)) {
         cat("\n i = ",i,"\n")
-        cat("\n Objekt results: ",results,".\n")
+        #cat("\n Objekt results: ",results,".\n")
         n_players <- N_PLAYERS[i]  
         
         result <- perform_analysis(n_players = n_players, n_rounds = N_ROUNDS)
