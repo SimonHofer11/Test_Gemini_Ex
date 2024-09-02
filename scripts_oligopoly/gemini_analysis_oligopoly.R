@@ -19,10 +19,12 @@ perform_analysis = function(n_players = 2, n_rounds = 25) {
     setwd("~/repbox/gemini/gemini_gha")
   }
 
-  source("scripts/gemini_tools.R")
+  cat("\n get wd: ",getwd(),"\n")
   source("scripts_oligopoly/ai_mod.R")
   source("scripts_oligopoly/script_demand_profit.R")
   source("scripts_oligopoly/errors.R")
+
+  source("scripts/gemini_tools.R")
   
   library(dplyr)
   library(jsonlite)
