@@ -19,11 +19,9 @@ perform_analysis = function(n_players = 2, n_rounds = 25) {
     setwd("~/repbox/gemini/gemini_gha")
   }
 
-  cat("\n get wd: ",getwd(),"\n")
   source("scripts_oligopoly/ai_mod.R")
   source("scripts_oligopoly/script_demand_profit.R")
   source("scripts_oligopoly/errors.R")
-  message("here we are")
   source("scripts_oligopoly/gemini_tools.R")
   
   library(dplyr)
@@ -39,6 +37,8 @@ perform_analysis = function(n_players = 2, n_rounds = 25) {
   game$err_msg
   
   options(warn=2)
+  
+  cat("\n Nach Game before save results\n")
   
   
   cur_time = as.numeric(Sys.time())

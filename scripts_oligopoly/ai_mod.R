@@ -276,6 +276,7 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
     })
   }
   
+  cat("\n response of q in this round: ",as.numeric(res$candidates[[1]][[1]][[1]][["text"]]),"\n")
 
   # Possible errors
   is_err = !res$ok & is(q,"try-error")
