@@ -1,6 +1,5 @@
 IS_ON_GHA = Sys.info()['sysname'] != "Windows"
-#getwd()
-#setwd("C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/scripts")
+
 example = function() {
   source("errors.R")
   source("gemini_run.R")
@@ -14,8 +13,6 @@ example = function() {
 
   # if error call
   traceback()
-  #Funktion: run_game: 
-  #Ganzes Spiel durchlaufen lassen mit diesem Command
   game = run_game(game, debug_mode = FALSE)
   game$ok
   game$err_msg
@@ -25,6 +22,7 @@ example = function() {
 
 }
 #example
+
 
 if (IS_ON_GHA) {
   # overwrite restore point
@@ -41,14 +39,14 @@ run_game = function(game, debug_mode=FALSE, start_time) {
     setwd("~")
     outdir = "/root/output"
   }
-#Wenn noch Runden zu spielen sind: aktiviere Fkt: game_play_next_round:
-  if (debug_mode) {
+
+    if (debug_mode) {
     while(game$cur_round < game$n_rounds) {
       game = game_play_next_round(game, api_key = API_KEY, start_time = start_time)
     }
 
   } else {
-    # Later the main loop
+    # Main loop
     res = try({
       while(game$cur_round < game$n_rounds) {
         game = game_play_next_round(game, api_key = API_KEY, start_time = start_time)
@@ -79,7 +77,7 @@ new_player_df = function(i, n_rounds) {
     strategy_prompt = rep("", n_rounds)
   )
 }
-#kreiert neues Spielobjekt, erster Call
+
 new_game = function(n_players, n_rounds, temperatures=rep(1, n_players)) {
   restore.point("new_game")
   game = list(
@@ -87,10 +85,9 @@ new_game = function(n_players, n_rounds, temperatures=rep(1, n_players)) {
     n_players = n_players,
     n_rounds = n_rounds,
     cur_round = 0,
-    #Erklärung: n_rounds wird als Parameter an Funktion new_player_df weitergegeben
     player_dfs = lapply(1:n_players,new_player_df, n_rounds=n_rounds)
   )
-  #Resultate der test Konversation miteinbringen
+  
   if(!IS_ON_GHA & n_players==2 & n_rounds == 5){
     test_conv_results = read.csv("C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/Other/test_conversation/market_results_test_conversation.csv", sep = ";")
     p_1_values = test_conv_results %>% 
@@ -105,7 +102,6 @@ new_game = function(n_players, n_rounds, temperatures=rep(1, n_players)) {
 
 game_play_next_round = function(game, api_key, start_time) {
   restore.point("game_play_next_round")
-  # Check if finished
 
   game$cur_round = game$cur_round + 1
 
@@ -114,7 +110,6 @@ game_play_next_round = function(game, api_key, start_time) {
   for (i in 1:game$n_players) {
     game = player_make_history_text(game, i)
     game = player_make_strategy_prompt(game,i)
-    #game = player_make_plan_prompt(game, i)
     game = player_run_strategy_prompt(game, i, api_key = api_key, start_time = start_time)
     game = player_make_q_prompt(game, i)
     game = player_run_q_prompt(game, i, api_key = api_key, start_time = start_time)
@@ -133,21 +128,13 @@ player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10, api
   prompt = df$strategy_prompt[t]
   
   if(IS_ON_GHA){
-    cat("\nVor Strategy Prompt in Runde :",t,".\n")
     res = run_gemini(prompt,api_key, model="gemini-1.5-flash", json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
-    cat("\nDurch Strategy Prompt in Runde :",t,".\n")
     res$ok = TRUE
     cur_time = as.numeric(Sys.time())
     
     if (cur_time - start_time > MAX_RUNTIME_SEC) {
-      cat("\nStop because total runtime exceeded ", MAX_RUNTIME_SEC, " seconds.\n")
       return()
     }
-    #wait_sec = MIN_SEC_PER_PROMPT-(cur_time - prompt_start_time)
-    #if (wait_sec > 0) {
-    #  cat("\nWait for ", round(wait_sec), "seconds...")
-    #  Sys.sleep(wait_sec)
-    #}
     Sys.sleep(5)
     
     
@@ -158,7 +145,6 @@ player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10, api
     )
 
   }
-  cat("\nres ok: ",res$ok," .\n")
 
   if (!res$ok) {
     if (attempt > max_attempts) {
@@ -168,9 +154,7 @@ player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10, api
     game = player_run_strategy_prompt(game,i,attempt=attempt+1)
     return(game)
   }
-  cat("\n hier übergeben wir den Text unserem Game Objekt in Runde: ",t," .\n")
 
-  #Her dann den Text aufnehmen von Gemini, ggf. hier Anpassungen treffen
   df$strategy_response[[t]] = res$candidates[[1]][[1]][[1]][["text"]]
 
   game$player_dfs[[i]] = df
@@ -273,9 +257,7 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
     cur_time = as.numeric(Sys.time())
     res$ok = TRUE
     Sys.sleep(5)
-    cat("\n so sieht q direkt nach ausführung von res aus: ",res$candidates[[1]][[1]][[1]][["text"]],"\n")
     if (cur_time - start_time > MAX_RUNTIME_SEC) {
-      cat("\nStop because total runtime exceeded ", MAX_RUNTIME_SEC, " seconds.\n")
       return()
     
     }
@@ -293,11 +275,6 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
   if (res$ok) {
     q = try({
       
-
-      # Bereinigen des Strings von unerwünschten Zeichen
-      #obj <- fromJSON(gsub("```json |```", "", res$candidates[[1]][[1]][[1]][["text"]]))
-      #obj = res$candidates[[1]][[1]][[1]][["text"]]
-      #obj = fromJSON(res$text)
       obj = (res$candidates[[1]][[1]][[1]][["text"]])
       as.numeric(obj$q)
     })
@@ -318,10 +295,6 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
     game = player_run_q_prompt(game,i,attempt=attempt+1)
     return(game)
   }
-  cat("\n druch q prompt durch\n")
-  cat("hier q prompt: ",res$candidates[[1]][[1]][[1]][["text"]],".\n")
-  #clean_q <- gsub("^json ", "", q)
-  cat("hier q prompt2: ",as.numeric(res$candidates[[1]][[1]][[1]][["text"]]),".\n")
   df$q[[t]] = as.numeric(res$candidates[[1]][[1]][[1]][["text"]])
   game$player_dfs[[i]] = df
   game
@@ -337,7 +310,6 @@ player_make_history_text = function(game, i) {
 
   # Build history text from past prices, q and profits for the player
 
-  #hist_text = "-- I WILL BE THE HISTORY TEXT--" # TO DO
   if(t==1){
     hist_text = ""
   } else {
@@ -362,7 +334,6 @@ player_make_history_text = function(game, i) {
 
 }
 
-#Noch nicht im Projekt integriert
 player_make_strategy_prompt = function(game,i){
   # Update game with the current round's history text
   game <- player_make_history_text(game,i)
@@ -436,12 +407,10 @@ player_make_strategy_prompt = function(game,i){
 
 
 game_compute_round_results= function(game){
-  cat("\n in game compute round results angekommen\n")
   df = game$player_dfs
   t = game$cur_round
   Q = 0
-  cat("\n df[[i]]$q[[t]]: ",df[[1]]$q[[t]],"\n")
-  
+
   for (i in 1: game$n_players){
   Q = Q + df[[i]]$q[[t]]
   }
@@ -459,96 +428,4 @@ game_compute_round_results= function(game){
   game$player_dfs = df
   game
   
-  #soll dann am Ende: Q, Q_other, pi und p berechnen
 }
-
-
-
-
-
-
-#Offene Funktionen, entweder gar nicht gebrauchbar oder noch einzupflegen in Projekt
-
-# ###Kann weg?
-# make_strategy_prompt = function(game,i) {
-#   
-# }
-# 
-# make_q_prompt = function(player, round, history_text, strategy) {
-#   # prompt to induce AI to return json with quantity
-#   # {q: quantity as numeric}
-# 
-# }
-# 
-# play_player_round = function(player, round,...) {
-#   prev_strategy = get_prev_strategy(player, round)
-#   hist_text = make_history_text(...)
-# 
-#   strat_prompt = make_strategy_prompt(player, round, history_text)
-# 
-# }
-
-
-
-
-
-
-# 
-# #####Kann weg??
-# ###hie rprompt an gemini übergeben
-# player_make_plan_prompt = function(game, i) {
-#   restore.point("player_run_strategy_prompt")
-#   df = game$player_dfs[[i]]
-#   t = game$cur_round
-#   #Strategy prompt:
-#   prompt = df$strategy_prompt[t]
-# 
-#   if (IS_ON_GHA) {
-#     #Hier dann Funktion schreiben mit run_gemini, welche den command übergibt. und Antwort dann einspeicher
-#     res = run_json_prompt(prompt, max_tries)
-#     #Muss dann die JSON übernehme
-#   } else {
-#     res = list(
-#       ok = TRUE,
-#       #Hier noch ggf anpassen mit test_conversation rn_pn_strategy_response, aber nicht notwendig
-#       text = paste0("-- PLAN PROMPT FOR i = ",i," t = ", t)
-#     )
-#   }
-#   #TO DO: hier dann die Funktion um q aus res zu extrahieren
-#   q = NULL
-#   if (res$ok) {
-#     q = try({
-#       obj = text
-#       #as.numeric(obj$q)
-#     })
-#   }
-#   ###Debugging nochmals checken
-#   # Possible errors
-#   #is_err = !res$ok & is(q,"try-error")
-#   #if (!is_err) {
-#   #  is_err = is.na(q)
-#   #}
-#   is_err = FALSE
-#   if (is_err) {
-#     if (attempt > max_attempts) {
-#       # Build that function which stops all
-#       stop_game(game, "Error in make strategy")
-#     }
-#     game = player_run_q_prompt(game,i,attempt=attempt+1)
-#     return(game)
-#   }
-#   
-#   
-#   #resultat
-#   df$plan_prompt[t] = prompt
-#   game$player_dfs[[i]] = df
-#   game
-#   
-#   #######
-#   
-# 
-#   
-#   
-# }
-
-#XXX
