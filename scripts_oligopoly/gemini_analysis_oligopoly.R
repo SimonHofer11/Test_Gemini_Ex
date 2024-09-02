@@ -43,7 +43,7 @@ perform_analysis = function(n_players = 2, n_rounds = 25) {
   
   cur_time = as.numeric(Sys.time())
   #save in gemini_results
-  results_dir <- "~/gemini_results"
+  results_dir <- "/gemini_results"
 
   cur_time <- as.numeric(Sys.time())
   out_file <- paste0(results_dir, "/", "oligopoly_experiment", cur_time, "_", n_players, "_Firmen.Rds")
