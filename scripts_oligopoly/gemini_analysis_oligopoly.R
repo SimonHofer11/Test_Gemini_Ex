@@ -24,7 +24,7 @@ perform_analysis = function(n_players = 2, n_rounds = 25) {
   source("scripts_oligopoly/script_demand_profit.R")
   source("scripts_oligopoly/errors.R")
   message("here we are")
-  source("~/scripts/gemini_tools.R")
+  source("scripts_oligopoly/gemini_tools.R")
   
   library(dplyr)
   library(jsonlite)
