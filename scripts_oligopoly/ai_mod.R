@@ -365,7 +365,7 @@ player_make_strategy_prompt = function(game,i){
   t <- game$cur_round
   hist_text <- df$hist_text[[t]]
   if (t > 1) {
-    strategy_round_before = df$strategy_prompt[[t-1]]
+    strategy_round_before = df$strategy_response[[t-1]]
   } else {
     strategy_round_before = "As this is the first round, there is no previous strategy."
   }
