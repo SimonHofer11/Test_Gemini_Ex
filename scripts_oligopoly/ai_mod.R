@@ -308,6 +308,7 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
       # Build that function which stops all
       stop_game(game, "Error in make q")
     }
+    cat("\n: i = ",i," attempt neu = ",attempt+1,"start time = ",start_time,"\n")
     game = player_run_q_prompt(game,i,attempt=attempt+1, api_key=api_key, start_time=start_time)
     return(game)
   }
@@ -366,7 +367,7 @@ player_make_strategy_prompt = function(game,i){
   if (t > 1) {
     strategy_round_before = df$strategy_prompt[[t-1]]
   } else {
-    strategy_round_before = ""
+    strategy_round_before = "As this is the first round, there is no previous strategy."
   }
 
   # Define the template with the history text included
