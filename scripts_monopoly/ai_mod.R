@@ -44,13 +44,11 @@ run_game = function(game, debug_mode=FALSE, start_time) {
 
     if (debug_mode) {
     while(game$cur_round < game$n_rounds) {
-      print("Hier sind wir")
       start_time = as.numeric(Sys.Date())
       game = game_play_next_round(game, api_key = "", start_time = start_time)
     }
 
   } else {
-    print("Hier sind wir 2")
     # Main loop
     res = try({
       while(game$cur_round < game$n_rounds) {
@@ -74,8 +72,6 @@ new_player_df = function(n_rounds) {
     p = rep(NA_real_, n_rounds),
     q = rep(0, n_rounds),
     pi = rep(NA_real_, n_rounds),
-    #Q_other = rep(NA_real_, n_rounds),
-    #Q = rep(NA_real_, n_rounds),
     strategy_response = rep("", n_rounds),
     hist_text = rep("", n_rounds),
     q_prompt = rep("", n_rounds),
@@ -87,21 +83,12 @@ new_game = function(n_rounds, temperature =1) {
   restore.point("new_game")
   game = list(
     ok = TRUE,
-    #n_players = n_players,
     n_rounds = n_rounds,
     cur_round = 0,
     player_dfs = new_player_df(n_rounds)
   )
   
-  #if(!IS_ON_GHA & n_players==2 & n_rounds == 5){
-  #  test_conv_results = read.csv("C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/Other/test_conversation/market_results_test_conversation.csv", sep = ";")
-  #  p_1_values = test_conv_results %>% 
-  #    filter( Spieler == 1)
-  #  p_2_values = test_conv_results %>% 
-  #    filter( Spieler == 2)
-  #  game$player_dfs[[1]]$q = p_1_values$q
-  #  game$player_dfs[[2]]$q = p_2_values$q
-  #  }
+  
   game
 }
 
@@ -109,9 +96,6 @@ game_play_next_round = function(game, api_key, start_time) {
   restore.point("game_play_next_round")
 
   game$cur_round = game$cur_round + 1
-
-  # Go through every player
-  #i = 1
   
   game = player_make_history_text(game)
   game = player_make_strategy_prompt(game)
@@ -134,7 +118,6 @@ player_run_strategy_prompt = function(game, attempt=1, max_attempts = 10, api_ke
   
   if(IS_ON_GHA){
     res = run_gemini(prompt,api_key, model="gemini-1.5-flash", json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
-    #res$ok = TRUE
     cur_time = as.numeric(Sys.time())
     
     if (cur_time - start_time > MAX_RUNTIME_SEC) {
@@ -198,8 +181,8 @@ player_make_q_prompt = function(game){
       "In each round the output decisions of you will be registered, the corresponding price will be determined and the profits will be computed.\n",
       "We play a total of 25 rounds. In each round you can write down a strategic plan and choose a quantity between 0 and 100 in 0.01 steps.\n\n",
       "To help you for the plan and simulate what quantity a participant might choose, we have provided you with a profit calculator, which allows you to calculate your own profit based on your quantity. The function (exemplarily written in the R programming language) is as follows:\n",
-      ###Hier überarbeiten
-      "  profit_calculator <- function(q_i) {\n",
+     
+       "  profit_calculator <- function(q_i) {\n",
       "  #q_i is the chosen quantitiy of you in this round \n",
       "  p <- max(100 - q_i, 0)    # market price based on the quantity\n",
       "  revenue <- p * q_i\n",
@@ -237,7 +220,6 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
   
     res = run_gemini(prompt,api_key, model="gemini-1.5-flash", json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
     cur_time = as.numeric(Sys.time())
-    #res$ok = TRUE
     Sys.sleep(5)
     if (cur_time - start_time > MAX_RUNTIME_SEC) {
       return()
@@ -333,7 +315,7 @@ player_make_strategy_prompt = function(game){
   t <- game$cur_round
   hist_text <- df$hist_text[[t]]
   if (t > 1) {
-    strategy_round_before = df$strategy_prompt[[t-1]]
+    strategy_round_before = df$strategy_response[[t-1]]
   } else {
     strategy_round_before = ""
   }
@@ -351,7 +333,6 @@ player_make_strategy_prompt = function(game){
     "We play a total of 25 rounds. In each round you can write down a strategic plan and choose a quantity between 0 and 100 in 0.01 steps.\n\n",
     "To help you for the plan and simulate what quantity a participant might choose, we have provided you with a profit calculator, which allows you to calculate your own profit based on your quantity. The function (exemplarily written in the R programming language) is as follows:\n",
     
-    ###Hier überarbeiten
     "profit_calculator <- function(q_i) {\n",
     "  #q_i is the chosen quantitiy of you in this round \n",
     "  p <- max(100 - q_i, 0)    # market price based on the quantity\n",
@@ -387,10 +368,8 @@ game_compute_round_results= function(game){
   
   period_results = simulate_period(df$q[[t]]) 
   df$pi[[t]] =  period_results$pi
-    #df[[i]]$Q_other[[t]] =  period_results_i$Q_other
   df$p[[t]] =  period_results$price
-    #df[[i]]$Q[[t]] = Q
-    
+
   
 
   
