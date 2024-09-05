@@ -106,7 +106,7 @@ game_play_next_round = function(game, api_key, start_time) {
   game$cur_round = game$cur_round + 1
 
   # Go through every player
-  i = 1
+  #i = 1
   for (i in 1:game$n_players) {
     game = player_make_history_text(game, i)
     game = player_make_strategy_prompt(game,i)
@@ -337,7 +337,12 @@ player_make_strategy_prompt = function(game,i){
   df <- game$player_dfs[[i]]
   t <- game$cur_round
   hist_text <- df$hist_text[[t]]
-  
+  if (t > 1) {
+    strategy_round_before = df$strategy_prompt[[t-1]]
+  } else {
+    strategy_round_before = ""
+  }
+
   # Define the template with the history text included
   if(game$n_players == 2){
     
@@ -361,6 +366,9 @@ player_make_strategy_prompt = function(game,i){
     "  return(profit)\n",
     "}\n\n",
     hist_text, "\n\n",  
+    "In Addition, I provide you with the strategy you wrote down for the last round: \n",
+    strategy_round_before,
+    "\n",
     "Based on these information, I would like you to write down your plans for what quantity strategy to test in the next round. Be detailed and precise but keep things succinct, while considering the provided rules.\n",
     "Simply write the plan for the next round in the field provided.\n",
     "Plan in the next round: <fill in plan here>\n"
@@ -385,7 +393,10 @@ player_make_strategy_prompt = function(game,i){
       "  profit <- revenue - costs\n",
       "  return(profit)\n",
       "}\n\n",
-      hist_text, "\n\n",  
+      hist_text, "\n\n", 
+      "In Addition, I provide you with the strategy you wrote down for the last round: \n",
+      strategy_round_before,
+      "\n",
       "Based on these information, I would like you to write down your plans for what quantity strategy to test in the next round. Be detailed and precise but keep things succinct, while considering the provided rules.\n",
       "Simply write the plan for the next round in the field provided.\n",
       "Plan in the next round: <fill in plan here>\n"
