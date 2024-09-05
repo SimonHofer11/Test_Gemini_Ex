@@ -1,5 +1,5 @@
 IS_ON_GHA = Sys.info()['sysname'] != "Windows"
-setwd("C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/scripts_monopoly")
+#setwd("C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/scripts_monopoly")
 
 example = function() {
   source("errors.R")
