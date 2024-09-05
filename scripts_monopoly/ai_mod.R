@@ -286,7 +286,7 @@ player_make_history_text = function(game) {
   # Build history text from past prices, q and profits for the player
 
   if(t==1){
-    hist_text = ""
+    hist_text = "\nAs this is the first round, there is no historical market information.\n"
   } else {
     hist_text = "Furthermore, to help you, we have listed the quantities you have placed so far, the resulting market prices and your profits:\n\n"
     
@@ -319,7 +319,7 @@ player_make_strategy_prompt = function(game){
   if (t > 1) {
     strategy_round_before = df$strategy_response[[t-1]]
   } else {
-    strategy_round_before = ""
+    strategy_round_before = "\nAs this is the first round, there is no previous strategy.\n"
   }
 
   # Define the template with the history text included
