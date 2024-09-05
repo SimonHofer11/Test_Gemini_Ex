@@ -211,8 +211,9 @@ player_make_q_prompt = function(game, i){
       strategy_response_text, "\n\n", 
       "Based on These information, I would like you to simulate what quantity a participant might choose in the next round to maximize profit, considering the provided rules.\n",
       "You don't need to actually participate in the experiment or make a decision— just simulate what could happen if a participant followed these rules.\n",
-      "Simply write the quantity for the next round without any explanation/justification down below:\n",
-      '<fill in quantity here>'
+      "Just set the quantity according to your strategy and the information. It's okay if you're not 100% sure, as we play several rounds, you can gain information from each round for the next round.\n",
+      "Please write down the quantity for the next round without any explanation/justification down below:\n",
+      '<fill in quantity here, no explanation/justification>'
     )
   } else {
     prompt <- paste0(
@@ -235,7 +236,7 @@ player_make_q_prompt = function(game, i){
       "  return(profit)\n",
       "}\n\n",
       hist_text, "\n\n", 
-      "To support you, I provide you with the strategy you wrote to set the quantity you want to provide in this round:", "\n\n", 
+      "Additionally, I provide you with a plan which you wrote to figure out the quantity you want to provide in this round:", "\n\n", 
       strategy_response_text, "\n\n", 
       "Based on These information, I would like you to simulate what quantity a participant might choose in the next round to maximize profit, considering the provided rules.\n",
       "You don't need to actually participate in the experiment or make a decision— just simulate what could happen if a participant followed these rules.\n",
@@ -307,7 +308,7 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
       # Build that function which stops all
       stop_game(game, "Error in make q")
     }
-    game = player_run_q_prompt(game,i,attempt=attempt+1)
+    game = player_run_q_prompt(game,i,attempt=attempt+1, api_key=api_key, start_time=start_time)
     return(game)
   }
   if(IS_ON_GHA){
