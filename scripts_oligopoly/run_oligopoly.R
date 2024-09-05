@@ -48,7 +48,7 @@ is_local <- function(is_local = TRUE) {
         
         result <- perform_analysis(n_players = n_players, n_rounds = N_ROUNDS)
         cat("\nach Spiel Nummer: ",i,".\n")
-        result_name <- paste0("game_", n_players, "_player")
+        result_name <- paste0("game_", n_players, "_player_run_",i)
         results[[result_name]] <- result
       }
       
