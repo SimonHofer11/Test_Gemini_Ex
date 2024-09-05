@@ -19,10 +19,10 @@ perform_analysis = function(n_players = 2, n_rounds = 25) {
     setwd("~/repbox/gemini/gemini_gha")
   }
 
-  source("scripts_oligopoly/ai_mod.R")
-  source("scripts_oligopoly/script_demand_profit.R")
-  source("scripts_oligopoly/errors.R")
-  source("scripts_oligopoly/gemini_tools.R")
+  source("scripts_monopoly/ai_mod.R")
+  source("scripts_monopoly/script_demand_profit.R")
+  source("scripts_monopoly/errors.R")
+  source("scripts_monopoly/gemini_tools.R")
   
   library(dplyr)
   library(jsonlite)
@@ -85,7 +85,7 @@ analyse_prompt_file = function(file, config_df,  api_key,verbose=TRUE, add_promp
 }
 
 
-analyse_prompt_oligopoly = function(prompt, config_df,  api_key,verbose=TRUE, add_prompt=TRUE){
+analyse_prompt_monopoly = function(prompt, config_df,  api_key,verbose=TRUE, add_prompt=TRUE){
   if (verbose) {
     cat(paste0("\n\nANALYSE ", file,"\n\n"))
   }
@@ -131,7 +131,7 @@ get_prompt_config = function(file, config_df) {
 }
 
 load_prompt_configs = function() {
-  cat("\n in load prompt configs in gemini_analysis_oligopoly.\n")
+  cat("\n in load prompt configs in gemini_analysis_monopoly.\n")
   library(stringi)
   library(dplyr)
 
@@ -142,7 +142,7 @@ load_prompt_configs = function() {
     res$prompt_type = prompt_type
     res = as.data.frame(res)
   }))
-  cat("\n nach load prompt configs in gemini_analysis_oligopoly.\n")
+  cat("\n nach load prompt configs in gemini_analysis_monopoly.\n")
   
   return(config_df)
   

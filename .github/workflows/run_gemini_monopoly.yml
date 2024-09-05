@@ -1,0 +1,21 @@
+name: Workflow for Monopoly Experiment
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build  -t gemini_ex/gha_gemi .
+    - name: Docker Run Action
+      run: docker run --rm --name gha_gemi --env API_KEY="${{ secrets.API_KEY }}" -v $GITHUB_WORKSPACE/scripts_monopoly/:/root/scripts_monopoly/:rw -v $GITHUB_WORKSPACE/prompts/:/root/prompts/:rw -v $GITHUB_WORKSPACE/config/:/root/config/:rw -v $GITHUB_WORKSPACE/gemini_results:/root/gemini_results:rw -v $GITHUB_WORKSPACE/output:/root/output:rw gemini_ex/gha_gemi R -e 'Sys.setenv("PATH" = paste(Sys.getenv("PATH"),"/usr/local/stata/",sep=":")); source("~/scripts_monopoly/run_monopoly.R")'
+    - uses: actions/upload-artifact@v4
+      with:
+        name: gemini_results
+        path: ${{ github.workspace }}/output/

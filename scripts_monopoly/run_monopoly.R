@@ -9,7 +9,7 @@ is_local <- function(is_local = TRUE) {
     message("Running local")
     if (!FALSE) {
       setwd("C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/scripts_monopoly")
-      source("C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/scripts_monopoly/gemini_analysis_oligopoly.R")
+      source("C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/scripts_monopoly/gemini_analysis_monopoly.R")
       perform_analysis()
     }
     
@@ -41,7 +41,7 @@ is_local <- function(is_local = TRUE) {
       results <- list() 
       
       for (i in 1:length(N_PLAYERS)) {
-        source("~/scripts_oligopoly/gemini_analysis_oligopoly.R")
+        source("~/scripts_monopoly/gemini_analysis_monopoly.R")
         cat("\n i = ",i,"\n")
         #cat("\n Objekt results: ",results,".\n")
         n_players <- N_PLAYERS[i]  
@@ -57,7 +57,7 @@ is_local <- function(is_local = TRUE) {
       outdir = "/root/output"
       n_players_str <- paste(N_PLAYERS, collapse = "_")
       
-      out_file_root_output = paste0(outdir, "/", "oligopoly_experiment_", cur_time, "_", n_players_str, "_Firmen.Rds")
+      out_file_root_output = paste0(outdir, "/", "monopoly_experiment_", cur_time, "_", n_players_str, "_Firmen.Rds")
       
       
       saveRDS(results, out_file_root_output)
