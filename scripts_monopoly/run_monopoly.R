@@ -1,6 +1,7 @@
-#Define the number of players (if you select several, the game will be repeated several times)
-N_PLAYERS = c(2,3) #c(2,3)
-N_ROUNDS = 2
+#MONOPOLY GAME
+
+#Define the number of rounds (if you select several, the game will be repeated several times with the amount of rounds you selected)
+N_ROUNDS = c(5)
 
 
 is_local <- function(is_local = TRUE) {
@@ -40,24 +41,24 @@ is_local <- function(is_local = TRUE) {
       
       results <- list() 
       
-      for (i in 1:length(N_PLAYERS)) {
+      for (i in 1:length(N_ROUNDS)) {
         source("~/scripts_monopoly/gemini_analysis_monopoly.R")
         cat("\n i = ",i,"\n")
         #cat("\n Objekt results: ",results,".\n")
-        n_players <- N_PLAYERS[i]  
+        n_rounds <- N_ROUNDS[i]  
         
-        result <- perform_analysis(n_players = n_players, n_rounds = N_ROUNDS)
+        result <- perform_analysis(, n_rounds = n_rounds)
         cat("\nach Spiel Nummer: ",i,".\n")
-        result_name <- paste0("game_", n_players, "_player")
+        result_name <- paste0("game_", n_rounds, "_rounds")
         results[[result_name]] <- result
       }
       
       setwd("~")
       cur_time <- as.numeric(Sys.time())
       outdir = "/root/output"
-      n_players_str <- paste(N_PLAYERS, collapse = "_")
+      n_rounds_str <- paste(N_ROUNDS, collapse = "_")
       
-      out_file_root_output = paste0(outdir, "/", "monopoly_experiment_", cur_time, "_", n_players_str, "_Firmen.Rds")
+      out_file_root_output = paste0(outdir, "/", "monopoly_experiment_", cur_time, "_", n_rounds_str, "_ROUNDS.Rds")
       
       
       saveRDS(results, out_file_root_output)
@@ -87,5 +88,5 @@ is_local <- function(is_local = TRUE) {
   }
 }
 
-is_local(TRUE)
+is_local(FALSE)
 
