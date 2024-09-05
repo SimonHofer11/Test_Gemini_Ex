@@ -1,5 +1,5 @@
 IS_ON_GHA = Sys.info()['sysname'] != "Windows"
-
+setwd("C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/scripts_oligopoly")
 example = function() {
   source("errors.R")
   source("gemini_run.R")
@@ -13,7 +13,7 @@ example = function() {
 
   # if error call
   traceback()
-  game = run_game(game, debug_mode = FALSE)
+  game = run_game(game, debug_mode = TRUE)
   game$ok
   game$err_msg
 
@@ -34,6 +34,7 @@ if (IS_ON_GHA) {
 }
 
 run_game = function(game, debug_mode=FALSE, start_time) {
+  print(paste0("debug mode: ",debug_mode))
   if (IS_ON_GHA){
     API_KEY = Sys.getenv("API_KEY")
     setwd("~")
@@ -42,6 +43,9 @@ run_game = function(game, debug_mode=FALSE, start_time) {
 
     if (debug_mode) {
     while(game$cur_round < game$n_rounds) {
+      print("wir sind hier")
+      start_time = as.numeric(Sys.Date())
+      API_KEY = ""
       game = game_play_next_round(game, api_key = API_KEY, start_time = start_time)
     }
 
@@ -154,8 +158,14 @@ player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10, api
     game = player_run_strategy_prompt(game,i,attempt=attempt+1)
     return(game)
   }
+  
+  if(IS_ON_GHA){
+    df$strategy_response[[t]] = res$candidates[[1]][[1]][[1]][["text"]]
+  } else {
+    df$strategy_response[[t]] = res$text
+    
+  }
 
-  df$strategy_response[[t]] = res$candidates[[1]][[1]][[1]][["text"]]
 
   game$player_dfs[[i]] = df
   game
@@ -225,12 +235,13 @@ player_make_q_prompt = function(game, i){
       "  return(profit)\n",
       "}\n\n",
       hist_text, "\n\n", 
-      "Additionally, I provide you with a plan which you wrote to figure out the quantity you want to provide in this round:", "\n\n", 
+      "To support you, I provide you with the strategy you wrote to set the quantity you want to provide in this round:", "\n\n", 
       strategy_response_text, "\n\n", 
       "Based on These information, I would like you to simulate what quantity a participant might choose in the next round to maximize profit, considering the provided rules.\n",
       "You don't need to actually participate in the experiment or make a decision— just simulate what could happen if a participant followed these rules.\n",
-      "Simply write the quantity for the next round without any explanation/justification down below:\n",
-      '<fill in quantity here>'
+      "Just set the quantity according to your strategy and the information. It's okay if you're not 100% sure, as we play several rounds, you can gain information from each round for the next round.\n",
+      "Please write down the quantity for the next round without any explanation/justification down below:\n",
+      '<fill in quantity here, no explanation/justification>'
     )
   }
   
@@ -269,12 +280,21 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
     )
   }
   q = NULL
-  
-  if (res$ok) {
-    q = try({
-      as.numeric(res$candidates[[1]][[1]][[1]][["text"]])
-    })
+  if(IS_ON_GHA){
+    if (res$ok) {
+      q = try({
+        as.numeric(res$candidates[[1]][[1]][[1]][["text"]])
+      })
+    }
+  } else {
+    res$ok = TRUE
+    if (res$ok) {
+      q = try({
+        res$text
+      })
+    }
   }
+  
   
   # Possible errors
   is_err = !res$ok & is(q,"try-error")
@@ -290,7 +310,12 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
     game = player_run_q_prompt(game,i,attempt=attempt+1)
     return(game)
   }
-  df$q[[t]] = as.numeric(res$candidates[[1]][[1]][[1]][["text"]])
+  if(IS_ON_GHA){
+    df$q[[t]] = as.numeric(res$candidates[[1]][[1]][[1]][["text"]])
+  } else {
+    df$q[[t]] = q
+    
+  }
   game$player_dfs[[i]] = df
   game
 
