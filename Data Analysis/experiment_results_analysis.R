@@ -7,7 +7,15 @@
 library(readr)
 
 # Alle .RDS Dateien im Verzeichnis auflisten
-rds_files <- list.files(path = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/2_Firms_25_rounds", pattern = "\\.Rds$", full.names = TRUE)
+
+#Experiment 2 firms 25 runs:
+#"C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Oligopoly/2_Firms_25_rounds/05092024_2_Firms_25_Rounds_w_prev_strat/oligopoly_2_firms_25_rounds_with_prev_strat_final.Rds"
+
+
+rds_files <- list.files(path = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Oligopoly/2_Firms_25_rounds/05092024_2_Firms_25_Rounds_w_prev_strat", pattern = "\\.Rds$", full.names = TRUE)
+
+saveRDS(experiment_results, file = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Oligopoly/2_Firms_25_rounds/05092024_2_Firms_25_Rounds_w_prev_strat/oligopoly_2_firms_25_rounds_with_prev_strat_final.Rds")
+
 
 # Eine leere Liste für die Ergebnisse erstellen
 experiment_results <- list()
@@ -17,13 +25,6 @@ experiment_results <- lapply(seq_along(rds_files), function(i) {
   readRDS(rds_files[i])
 })
 
-# Namen der Liste mit "Ablauf_1", "Ablauf_2", ... versehen
-names(experiment_results) <- paste0("Ablauf_", seq_along(rds_files))
-
-
-
-experiment_results[["Ablauf_2"]][["player_dfs"]][[1]][["Q"]]
-
 
 
 q_values <- numeric()
@@ -31,10 +32,10 @@ q_values <- numeric()
 # Schleife über die Abläufe 1 bis 6
 for (i in 1:6) {
   # Namen des aktuellen Ablaufs generieren
-  ablauf_name <- paste0("Ablauf_", i)
+  ablauf_name <- paste0("game_2_player_run_", i)
   
   # Extrahiere die Werte von "Q" und füge sie zur Liste hinzu
-  q_values <- c(q_values, experiment_results[[ablauf_name]][["player_dfs"]][[1]][["Q"]])
+  q_values <- c(q_values, experiment_results[[1]][[ablauf_name]][["player_dfs"]][[1]][["Q"]])
 }
 
 # Durchschnitt der Q-Werte berechnen
@@ -43,18 +44,15 @@ q_mean <- mean(q_values, na.rm = TRUE)
 r = q_mean/66
 r
 
-
-
-
 q_values_17_25 <- numeric()
 
 # Schleife über die Abläufe 1 bis 6
 for (i in 1:6) {
   # Namen des aktuellen Ablaufs generieren
-  ablauf_name <- paste0("Ablauf_", i)
+  ablauf_name <- paste0("game_2_player_run_", i)
   
   # Extrahiere die Werte von "Q" und füge sie zur Liste hinzu
-  q_values_17_25 <- c(q_values_17_25, experiment_results[[ablauf_name]][["player_dfs"]][[1]][["Q"]][17:25])
+  q_values_17_25 <- c(q_values_17_25, experiment_results[[1]][[ablauf_name]][["player_dfs"]][[1]][["Q"]][17:25])
 }
 
 # Durchschnitt der Q-Werte berechnen
