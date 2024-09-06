@@ -1,7 +1,7 @@
 #MONOPOLY GAME
 
 #Define the number of rounds (if you select several, the game will be repeated several times with the amount of rounds you selected)
-N_ROUNDS = c(25)
+N_ROUNDS = c(25,25,25,25,25,25)
 
 
 is_local <- function(is_local = TRUE) {
@@ -49,7 +49,7 @@ is_local <- function(is_local = TRUE) {
         
         result <- perform_analysis(n_rounds = n_rounds)
         cat("\nach Spiel Nummer: ",i,".\n")
-        result_name <- paste0("game_", n_rounds, "_rounds")
+        result_name <- paste0("game_", n_rounds, "_rounds_run_",i)
         results[[result_name]] <- result
       }
       
