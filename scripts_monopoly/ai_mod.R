@@ -191,9 +191,11 @@ player_make_q_prompt = function(game){
       "  return(profit)\n",
       "}\n\n",
       hist_text, "\n\n", 
-      ###With Function
-      "\nAs you have information about the quantity function: q = max(100-p,0) and profit pi = p*q - q, you might want to calculate the quantity to reach profit maximum (or you know it from your knowledge about profit maximum in monopoly situation).\n",
+      ###With Assistance to figure out profit maximum
+      #"\nAs you have information about the quantity function: q = max(100-p,0) and profit pi = p*q - q, you might want to calculate the quantity to reach profit maximum (or you know it from your knowledge about profit maximum in monopoly situation).\n",
       
+      #With profit maximizing quantity formula:
+      "\n To figure out the profit maximum quantity, I can give you further assistance: Profit Maximizing Quantity q = (a - c)/2, hereby 'a' refers to the maximum demand (demand at price  p = 0) and c refers to the marginal costs per unit.",
       "Additionally, I provide you with a plan which you wrote to figure out the quantity you want to provide in this round:", "\n\n", 
       strategy_response_text, "\n\n", 
       "Based on These information, I would like you to simulate what quantity a participant might choose in the next round to maximize profit, considering the provided rules.\n",
@@ -351,8 +353,11 @@ player_make_strategy_prompt = function(game){
     "In Addition, I provide you with the strategy you wrote down for the last round: \n",
     strategy_round_before,
     "\n",
-    ###With Function
-    "\nAs you have information about the quantity function : q = max(100-p,0) and profit pi = p*q - q, you might want to calculate the quantity to reach profit maximum (or you know it from your knowledge about profit maximum in monopoly situation).\n",
+    ###With Assistance to figure out profit maximum
+    #"\nAs you have information about the quantity function: q = max(100-p,0) and profit pi = p*q - q, you might want to calculate the quantity to reach profit maximum (or you know it from your knowledge about profit maximum in monopoly situation).\n",
+    
+    #With profit maximizing quantity formula:
+    "\n To figure out the profit maximum quantity, I can give you further assistance: Profit Maximizing Quantity q = (a - c)/2, hereby 'a' refers to the maximum demand (demand at price  p = 0) and c refers to the marginal costs per unit.",
     
     "Based on these information, I would like you to write down your plans for what quantity strategy to run in the next round. Be detailed and precise but keep things succinct, while considering the provided rules.\n",
     "Simply write the plan for the next round in the field provided.\n",

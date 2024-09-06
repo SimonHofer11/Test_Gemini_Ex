@@ -8,13 +8,21 @@ library(readr)
 
 # Alle .RDS Dateien im Verzeichnis auflisten
 
-#Experiment 2 firms 25 runs:
+#Monopoly 25 Rounds, base prompt
+#"C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Monopoly/25_Rounds_prompt_base", 
+
+#Monopoly 25 rounds with help profit maximization
+#"C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Monopoly/25_Rounds_with_help_profit_max", 
+
+
+# Oligopoly Experiment 2 firms 25 runs:
 #"C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Oligopoly/2_Firms_25_rounds/05092024_2_Firms_25_Rounds_w_prev_strat/oligopoly_2_firms_25_rounds_with_prev_strat_final.Rds"
 
 
-rds_files <- list.files(path = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Oligopoly/2_Firms_25_rounds/05092024_2_Firms_25_Rounds_w_prev_strat", pattern = "\\.Rds$", full.names = TRUE)
 
-saveRDS(experiment_results, file = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Oligopoly/2_Firms_25_rounds/05092024_2_Firms_25_Rounds_w_prev_strat/oligopoly_2_firms_25_rounds_with_prev_strat_final.Rds")
+rds_files <- list.files(path = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Monopoly/25_Rounds_with_help_profit_max", pattern = "\\.Rds$", full.names = TRUE)
+
+#saveRDS(experiment_results, file = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Oligopoly/2_Firms_25_rounds/05092024_2_Firms_25_Rounds_w_prev_strat/oligopoly_2_firms_25_rounds_with_prev_strat_final.Rds")
 
 
 # Eine leere Liste für die Ergebnisse erstellen
@@ -26,46 +34,73 @@ experiment_results <- lapply(seq_along(rds_files), function(i) {
 })
 
 
-
+experiment_results[[1]][["game_25_rounds_run_1"]][["player_dfs"]][["q"]]
 q_values <- numeric()
 
 # Schleife über die Abläufe 1 bis 6
 for (i in 1:6) {
   # Namen des aktuellen Ablaufs generieren
-  ablauf_name <- paste0("game_2_player_run_", i)
+  #Mmonopoly:
+  ablauf_name <- paste0("game_25_rounds_run_", i)
+  #Oligopoly:
+  #ablauf_name <- paste0("game_2_players_run_", i)
   
   # Extrahiere die Werte von "Q" und füge sie zur Liste hinzu
-  q_values <- c(q_values, experiment_results[[1]][[ablauf_name]][["player_dfs"]][[1]][["Q"]])
+  #Monopoly:
+  q_values <- c(q_values, experiment_results[[1]][[ablauf_name]][["player_dfs"]][["q"]])
+  
+  #oligopoly:
+  #q_values <- c(q_values, experiment_results[[1]][[ablauf_name]][["player_dfs"]][[1]][["q"]])
+  
 }
 
 # Durchschnitt der Q-Werte berechnen
 q_mean <- mean(q_values, na.rm = TRUE)
 
-r = q_mean/66
-r
+#Oligopoly:
+#r = q_mean/66
+#Monopoly:
+ r = q_mean/49.5
+ r
 
 q_values_17_25 <- numeric()
 
 # Schleife über die Abläufe 1 bis 6
 for (i in 1:6) {
   # Namen des aktuellen Ablaufs generieren
-  ablauf_name <- paste0("game_2_player_run_", i)
+  #Mmonopoly:
+  ablauf_name <- paste0("game_25_rounds_run_", i)
+  #Oligopoly:
+  #ablauf_name <- paste0("game_2_players_run_", i)
   
   # Extrahiere die Werte von "Q" und füge sie zur Liste hinzu
-  q_values_17_25 <- c(q_values_17_25, experiment_results[[1]][[ablauf_name]][["player_dfs"]][[1]][["Q"]][17:25])
+  #Monopoly:
+  q_values_17_25 <- c(q_values, experiment_results[[1]][[ablauf_name]][["player_dfs"]][["q"]][17:25])
+  
+  #oligopoly:
+  #  q_values_17_25 <- c(q_values_17_25, experiment_results[[1]][[ablauf_name]][["player_dfs"]][[1]][["Q"]][17:25])
+
 }
 
 # Durchschnitt der Q-Werte berechnen
+
 q_mean_17_25 <- mean(q_values_17_25, na.rm = TRUE)
 q_mean_17_25
+#Monopoly
+r_17_25 = q_mean_17_25/49.5
 
-r_17_25 = q_mean_17_25/66
+
+#Oligopoly
+#r_17_25 = q_mean_17_25/66
 
 
 
 #2. Bar plot
 
-q_nash = 66
+#Monopoly
+q_nash = 49.5
+#Oligopoly
+#q_nash = 66
 
 library(ggplot2)
 
