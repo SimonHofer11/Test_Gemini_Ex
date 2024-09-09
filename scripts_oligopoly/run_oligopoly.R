@@ -46,7 +46,7 @@ is_local <- function(is_local = TRUE) {
         #cat("\n Objekt results: ",results,".\n")
         n_players <- N_PLAYERS[i]  
         
-        result <- perform_analysis(n_players = n_players, n_rounds = N_ROUNDS)
+        result <- perform_analysis(n_players = n_players, n_rounds = N_ROUNDS, collusion = FALSE)
         cat("\nach Spiel Nummer: ",i,".\n")
         result_name <- paste0("game_", n_players, "_player_run_",i)
         results[[result_name]] <- result
