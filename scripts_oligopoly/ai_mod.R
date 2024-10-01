@@ -268,10 +268,11 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
     res = run_gemini(prompt,api_key, model="gemini-1.5-pro", json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
     cur_time = as.numeric(Sys.time())
     #res$ok = TRUE
-    Sys.sleep(5)
+    
     if (cur_time - start_time > MAX_RUNTIME_SEC) {
       return()
     }
+    Sys.sleep(30)
     
   } else {
     res = list(
