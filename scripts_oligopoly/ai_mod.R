@@ -139,7 +139,7 @@ player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10, api
     if (cur_time - start_time > MAX_RUNTIME_SEC) {
       return()
     }
-    Sys.sleep(5)
+    Sys.sleep(30)
     
     
   } else{
