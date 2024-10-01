@@ -1,5 +1,5 @@
 MAX_RUNTIME_SEC = 5*60*60 # Max runtime on Github
-MIN_SEC_PER_PROMPT = 5 # Minimum number of seconds between prompts
+MIN_SEC_PER_PROMPT = 30 # Minimum number of seconds between prompts
 
 
 perform_analysis = function(n_players = 2, n_rounds = 25, collusion = FALSE) {
