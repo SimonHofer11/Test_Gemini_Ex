@@ -132,14 +132,14 @@ player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10, api
   prompt = df$strategy_prompt[t]
   
   if(IS_ON_GHA){
-    res = run_gemini(prompt,api_key, model="gemini-1.5-flash", json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
+    res = run_gemini(prompt,api_key, model="gemini-1.5-pro", json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
     #res$ok = TRUE
     cur_time = as.numeric(Sys.time())
     
     if (cur_time - start_time > MAX_RUNTIME_SEC) {
       return()
     }
-    Sys.sleep(5)
+    Sys.sleep(30)
     
     
   } else{
@@ -265,14 +265,14 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
   if (IS_ON_GHA) {
 
   
-    res = run_gemini(prompt,api_key, model="gemini-1.5-flash", json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
+    res = run_gemini(prompt,api_key, model="gemini-1.5-pro", json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
     cur_time = as.numeric(Sys.time())
     #res$ok = TRUE
     
     if (cur_time - start_time > MAX_RUNTIME_SEC) {
       return()
     }
-    Sys.sleep(5)
+    Sys.sleep(30)
     
   } else {
     res = list(
