@@ -117,13 +117,13 @@ player_run_strategy_prompt = function(game, attempt=1, max_attempts = 10, api_ke
   prompt = df$strategy_prompt[t]
   
   if(IS_ON_GHA){
-    res = run_gemini(prompt,api_key, model="gemini-1.5-flash", json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
+    res = run_gemini(prompt,api_key, model="gemini-1.5-pro", json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
     cur_time = as.numeric(Sys.time())
     
     if (cur_time - start_time > MAX_RUNTIME_SEC) {
       return()
     }
-    Sys.sleep(5)
+    Sys.sleep(30)
     
     
   } else{
@@ -195,7 +195,7 @@ player_make_q_prompt = function(game){
       #"\nAs you have information about the quantity function: q = max(100-p,0) and profit pi = p*q - q, you might want to calculate the quantity to reach profit maximum (or you know it from your knowledge about profit maximum in monopoly situation).\n",
       
       #With profit maximizing quantity formula:
-      "\n To figure out the profit maximum quantity, I can give you further assistance: Profit Maximizing Quantity q = (a - c)/2, hereby 'a' refers to the maximum demand (demand at price  p = 0) and c refers to the marginal costs per unit.",
+      #"\n To figure out the profit maximum quantity, I can give you further assistance: Profit Maximizing Quantity q = (a - c)/2, hereby 'a' refers to the maximum demand (demand at price  p = 0) and c refers to the marginal costs per unit.",
       "Additionally, I provide you with a plan which you wrote to figure out the quantity you want to provide in this round:", "\n\n", 
       strategy_response_text, "\n\n", 
       "Based on These information, I would like you to simulate what quantity a participant might choose in the next round to maximize profit, considering the provided rules.\n",
@@ -224,9 +224,9 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
   if (IS_ON_GHA) {
 
   
-    res = run_gemini(prompt,api_key, model="gemini-1.5-flash", json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
+    res = run_gemini(prompt,api_key, model="gemini-1.5-pro", json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
     cur_time = as.numeric(Sys.time())
-    Sys.sleep(5)
+    Sys.sleep(30)
     if (cur_time - start_time > MAX_RUNTIME_SEC) {
       return()
     }
@@ -357,7 +357,7 @@ player_make_strategy_prompt = function(game){
     #"\nAs you have information about the quantity function: q = max(100-p,0) and profit pi = p*q - q, you might want to calculate the quantity to reach profit maximum (or you know it from your knowledge about profit maximum in monopoly situation).\n",
     
     #With profit maximizing quantity formula:
-    "\n To figure out the profit maximum quantity, I can give you further assistance: Profit Maximizing Quantity q = (a - c)/2, hereby 'a' refers to the maximum demand (demand at price  p = 0) and c refers to the marginal costs per unit.",
+    #"\n To figure out the profit maximum quantity, I can give you further assistance: Profit Maximizing Quantity q = (a - c)/2, hereby 'a' refers to the maximum demand (demand at price  p = 0) and c refers to the marginal costs per unit.",
     
     "Based on these information, I would like you to write down your plans for what quantity strategy to run in the next round. Be detailed and precise but keep things succinct, while considering the provided rules.\n",
     "Simply write the plan for the next round in the field provided.\n",
