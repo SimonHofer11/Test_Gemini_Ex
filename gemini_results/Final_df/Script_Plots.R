@@ -374,3 +374,99 @@ ggplot(df_monopol, aes(x = factor(Index, levels = 1:4, labels = x_labels), y = Q
   #annotate("text", x = 5, y = 66, label = "Quantity Nash", color = "blue", vjust = -1, hjust = 1)
 
 
+
+
+
+
+
+
+
+#####Pro vs Normal
+
+df_oligopol <- df_oligopol %>% 
+  mutate(is_pro = c(1,0,0,0,0,0,1,0,1),
+         is_pro_same_setting = c(1,NA,0,NA,NA,0,1,0,1))
+
+
+df_oligopol <- df_oligopol %>% 
+  mutate(pi_exp_to_pi_collusion_ratio = pi_avg_experiment/pi_collusive,
+         pi_exp_to_pi_nash_ratio = pi_avg_experiment/pi_nash)
+
+
+df_oligopol <- df_oligopol %>% 
+  mutate(Q_exp_to_pi_collusion_ratio = Q_mean/collusive_Q,
+         Q_exp_to_pi_nash_ratio = Q_mean/Q_nash)
+
+
+
+
+##Profit to Collusion Ratio
+df_oligopol_same_setting = df_oligopol %>% 
+  filter(!is.na(is_pro_same_setting))
+
+library(ggplot2)
+
+ggplot(df_oligopol_same_setting, aes(x = factor(is_pro, labels = c("Normal Version (Gemini Flash 1.5)", "Pro Version (Gemini Pro 1.5)")), y = pi_exp_to_pi_collusion_ratio)) +
+  geom_boxplot(fill = c("#66c2a5", "#fc8d62")) +
+  labs(
+    x = "Group",
+    y = "Average Profit in Experiment to Collusion Profit Ratio ",
+    title = "Ratio of Profit Results of the Experiments in Comparison to Collusion Profits by Version"
+  ) +
+  theme_minimal() +
+  scale_y_continuous(limits = c(0.3, 1), labels = scales::percent)
+
+
+
+
+###Profit to Nash
+library(ggplot2)
+
+ggplot(df_oligopol_same_setting, aes(x = factor(is_pro, labels = c("Normal Version (Gemini Flash 1.5)", "Pro Version (Gemini Pro 1.5)")), y = pi_exp_to_pi_nash_ratio)) +
+  geom_boxplot(fill = c("#66c2a5", "#fc8d62")) +
+  labs(
+    x = "Group",
+    y = "Average Profit in Experiment to Nash Profit Ratio ",
+    title = "Ratio of Profit Results of the Experiments in Comparison to Nash Profits by Version"
+  ) +
+  theme_minimal() +
+  scale_y_continuous(limits = c(0.6, 1.3), labels = scales::percent)
+
+
+###Profit to Nash
+library(ggplot2)
+
+ggplot(df_oligopol_same_setting, aes(x = factor(is_pro, labels = c("Normal Version (Gemini Flash 1.5)", "Pro Version (Gemini Pro 1.5)")), y = Q_exp_to_pi_nash_ratio)) +
+  geom_boxplot(fill = c("#66c2a5", "#fc8d62")) +
+  labs(
+    x = "Group",
+    y = "Average Quantity per Round in Experiment to Nash Profit Ratio ",
+    title = "Ratio of Average Quantity in the Experiments in Comparison to Nash Profits by Version"
+  ) +
+  theme_minimal() +
+  scale_y_continuous(limits = c(0.6, 1.3), labels = scales::percent)
+
+
+
+
+#Quantity mit number of Firms Balkendiagramm
+
+# Erstellen des Balkendiagramms
+ggplot(df_oligopol_same_setting, aes(x = factor(n), y = r, fill = factor(is_pro, labels = c("Normal Version (Gemini Flash 1.5)", "Pro Version (Gemini Pro 1.5)")))) +
+  geom_bar(stat = "identity", position = position_dodge(width = 0.9)) +
+  labs(
+    x = "Number of Firms",  # Beschriftung der X-Achse
+    y = "Ø-Experimental Quantity to Nash-Quantity Ratio",  # Beschriftung der Y-Achse
+    title = "Ratio of Experimental Quantity to Nash Quantity with increasing number of Firms",  # Titel des Diagramms
+    fill = "Group"  # Legende für die Balkengruppen
+  ) +
+  theme_minimal() +
+  scale_y_continuous(limits = c(0, 1.2), breaks = c(0.3,0.6,0.9,1.2)) +
+  
+  theme(
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),  # Stil des Titels
+    axis.title.x = element_text(size = 12, face = "bold"),
+    axis.title.y = element_text(size = 12, face = "bold"),
+    axis.text.x = element_text(size = 10),
+    axis.text.y = element_text(size = 10)
+  )
