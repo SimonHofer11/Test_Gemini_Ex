@@ -20,9 +20,10 @@ library(tidyr)
 #x = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Monopoly/25_Rounds_with_profit_max_formula"
 
 #Monopoly 25 Rounds Formula Profit Max
-x = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Monopoly/25_Rounds_temperature_0"
+#x = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Monopoly/25_Rounds_temperature_0"
 
-
+#Monopoly 25 Rounds PRO
+#x = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Monopoly/25_Rounds_PRO"
 
 
 
@@ -76,14 +77,14 @@ experiment_results <- lapply(seq_along(rds_files), function(i) {
 })
 
 #Datei vereinen:
-#experiment_results[[1]]$game_5_player_run_3 = experiment_results[[2]]$game_5_player_run_1
+#experiment_results[[1]]$game_25_rounds_run_3 = experiment_results[[2]]$game_25_rounds_run_1
 #experiment_results[[1]]$game_5_player_run_4 = experiment_results[[2]]$game_5_player_run_2
 #experiment_results[[1]]$game_5_player_run_5 = experiment_results[[3]]$game_5_player_run_1
 #experiment_results[[1]]$game_5_player_run_6 = experiment_results[[4]]$game_5_player_run_1
 
 
 
-#saveRDS(object = experiment_results[[1]], file = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Oligopoly/5_Firms_25_rounds_PRO/5_firms_joined.Rds")
+#saveRDS(object = experiment_results[[1]], file = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Monopoly/25_Rounds_PRO/monopoly_joined.Rds")
 
 #experiment_results = readRDS("C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Oligopoly/2_Firms_25_rounds/05092024_2_Firms_25_Rounds_w_prev_strat/oligopoly_2_firms_25_rounds_with_prev_strat_final.Rds")
 
@@ -94,10 +95,10 @@ q_values <- numeric()
 for (i in 1:6) {
   # Namen des aktuellen Ablaufs generieren
   #Mmonopoly:
-  ablauf_name <- paste0("game_25_rounds_run_", i)
+  #ablauf_name <- paste0("game_25_rounds_run_", i)
   #Oligopoly with prev strat:
   #2 Player
-  #ablauf_name <- paste0("game_2_player_run_", i)
+  ablauf_name <- paste0("game_2_player_run_", i)
   
   #3 Player
   #ablauf_name <- paste0("game_3_player_run_", i)
@@ -108,7 +109,7 @@ for (i in 1:6) {
   
   # Extrahiere die Werte von "Q" und füge sie zur Liste hinzu
   #Monopoly:
-  q_values <- c(q_values, experiment_results[[1]][[ablauf_name]][["player_dfs"]][["q"]])
+  #q_values <- c(q_values, experiment_results[[1]][[ablauf_name]][["player_dfs"]][["q"]])
   
   #Oligopoly without prev strat
   #q_values = c(q_values, experiment_results[[i]][["player_dfs"]][[1]][["Q"]])
@@ -117,7 +118,7 @@ for (i in 1:6) {
   #q_values <- c(q_values, experiment_results[[1]][[1]][[ablauf_name]][["player_dfs"]][[1]][["Q"]])
   
   #Oligopoly pro version
-  #q_values <- c(q_values, experiment_results[[1]][[ablauf_name]][["player_dfs"]][[1]][["Q"]])
+  q_values <- c(q_values, experiment_results[[1]][[ablauf_name]][["player_dfs"]][[1]][["Q"]])
   
 }
 
@@ -126,15 +127,15 @@ q_mean <- mean(q_values, na.rm = TRUE)
 
 #Oligopoly:
 #2 Firms
-#r = q_mean / 66
+r = q_mean / 66
 #3 Firms
 #r = q_mean/74.25
 #5firms
 #r = q_mean/82.5
 
 #Monopoly:
-r = q_mean/49.5
-r
+#r = q_mean/49.5
+#r
 
 q_values_17_25 <- numeric()
 
@@ -226,13 +227,43 @@ cbind(q_nash,q_mean,r,q_mean_17_25,r_17_25)
 df =as.data.frame(cbind(q_nash,q_mean,r,q_mean_17_25,r_17_25))
 plot
 
-name = "Monopoly temperature = 0"
+name = "Monopoly PRO"
 df$name = name
 
 
 list = list(name = name, values = df, plot = plot)
 
 
-saveRDS(object = list, file = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Final_Results/Monopoly_temperature_0.Rds")
+saveRDS(object = list, file = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Final_Results/Monopoly_PRO.Rds")
 #x = readRDS("C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Final_Results/2_Firms_25_Rounds_w_prev_strategy.Rds")
 #x$plot
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
