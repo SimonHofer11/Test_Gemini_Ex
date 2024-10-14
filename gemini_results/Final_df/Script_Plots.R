@@ -94,7 +94,7 @@ daten_liste[[13]]$values$pi_avg_experiment = daten_liste[[13]]$values$q_mean * (
 
 daten_liste[[14]]$values$pi_max = 2450.25
 daten_liste[[14]]$values$pi_avg_experiment = daten_liste[[14]]$values$q_mean * (100-daten_liste[[14]]$values$q_mean) - daten_liste[[14]]$values$q_mean
-monopoly_pro 
+ 
 
 # Nur die ersten 9 Listenobjekte auswählen
 daten_liste_auswahl <- daten_liste[1:9]
@@ -120,8 +120,6 @@ kombinierter_df = kombinierter_df %>%
       
 df_oligopol = kombinierter_df %>% 
   mutate(Index = 1:nrow(df_oligopol))
-
-
 
 
 
