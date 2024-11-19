@@ -73,7 +73,7 @@ run_game = function(game, debug_mode=FALSE, start_time, collusion = FALSE) {
 new_player_df = function(i, n_rounds, collusion = FALSE, n_players, player_type = "FLASH") {
   if  (collusion == FALSE){
     print("player_type")
-    print(player_type)
+    print(player_type[i])
     
   tibble(
     i = i,
@@ -180,6 +180,8 @@ player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10, api
   t = game$cur_round
   df = game$player_dfs[[i]]
   prompt = df$strategy_prompt[t]
+  print("strategy prompt df[i] type")
+  print(df$player_type)
   
   if(IS_ON_GHA){
     if(df$player_type == "FLASH"){
