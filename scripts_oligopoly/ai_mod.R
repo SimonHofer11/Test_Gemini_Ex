@@ -182,9 +182,11 @@ player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10, api
   prompt = df$strategy_prompt[t]
   print("strategy prompt df[i] type")
   print(df$player_type)
+  print("war von player")
+  print(i)
   
   if(IS_ON_GHA){
-    if(df$player_type == "FLASH"){
+    if(df$player_type[i] == "FLASH"){
       model = "gemini-1.5-flash"
     } else {
       model = "gemini-1.5-pro"
