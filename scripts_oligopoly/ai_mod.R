@@ -87,7 +87,7 @@ new_player_df = function(i, n_rounds, collusion = FALSE, n_players, player_type 
     hist_text = rep("", n_rounds),
     q_prompt = rep("", n_rounds),
     strategy_prompt = rep("", n_rounds),
-    player_type = rep(as.character(player_type),n_rounds)
+    player_type =player_type[i]
   )
   } else {
     #hier eventuell noch für n>2 codieren
