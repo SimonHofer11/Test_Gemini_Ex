@@ -30,9 +30,9 @@ perform_analysis = function(n_players = 2, n_rounds = 25, collusion = FALSE) {
   config_df = load_prompt_configs()
   
   
-  game = new_game(n_players= n_players, n_rounds = n_rounds)
+  game = new_game(n_players= n_players, n_rounds = n_rounds, collusion = collusion)
   traceback()
-  game = run_game(game, debug_mode = FALSE, start_time=start_time)
+  game = run_game(game, debug_mode = FALSE, start_time=start_time, collusion = collusion)
   game$ok
   game$err_msg
   
