@@ -1,11 +1,8 @@
 #Define the number of players (if you select several, the game will be repeated several times)
 N_PLAYERS = c(2) #c(2)
-<<<<<<< Updated upstream
-N_ROUNDS = 2
-=======
 PLAYER_TYPE = c("FLASH","PRO")
 N_ROUNDS = 3
->>>>>>> Stashed changes
+
 
 
 is_local <- function(is_local = TRUE) {
