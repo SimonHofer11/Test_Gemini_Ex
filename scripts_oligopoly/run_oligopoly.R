@@ -1,6 +1,6 @@
 #Define the number of players (if you select several, the game will be repeated several times)
-N_PLAYERS = c(5,5) #c(2)
-N_ROUNDS = 25
+N_PLAYERS = c(2) #c(2)
+N_ROUNDS = 2
 
 
 is_local <- function(is_local = TRUE) {
