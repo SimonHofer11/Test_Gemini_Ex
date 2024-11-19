@@ -1,7 +1,7 @@
 #Define the number of players (if you select several, the game will be repeated several times)
-N_PLAYERS = c(2) #c(2)
-PLAYER_TYPE = c("FLASH","PRO")
-N_ROUNDS = 3
+N_PLAYERS = c(5,5,5) #c(2)
+PLAYER_TYPE = c("FLASH","FLASH","FLASH","FLASH","PRO")
+N_ROUNDS = 25
 
 
 
