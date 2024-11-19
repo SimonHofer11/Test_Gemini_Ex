@@ -2,7 +2,7 @@ MAX_RUNTIME_SEC = 5*60*60 # Max runtime on Github
 MIN_SEC_PER_PROMPT = 30 # Minimum number of seconds between prompts
 
 
-perform_analysis = function(n_players = 2, n_rounds = 25, collusion = FALSE) {
+perform_analysis = function(n_players = 2, n_rounds = 25, collusion = FALSE, player_type = "FLASH") {
   cat("Current working directory: ", getwd(), "\n")
   #Hier finden die ganzen Anpassungen statt, inklusive Einbindung ai_mod, errors, script_demand_profit,etc.
   library(dplyr)
@@ -30,7 +30,7 @@ perform_analysis = function(n_players = 2, n_rounds = 25, collusion = FALSE) {
   config_df = load_prompt_configs()
   
   
-  game = new_game(n_players= n_players, n_rounds = n_rounds, collusion = collusion)
+  game = new_game(n_players= n_players, n_rounds = n_rounds, collusion = collusion, player_type = player_type)
   traceback()
   game = run_game(game, debug_mode = FALSE, start_time=start_time, collusion = collusion)
   game$ok

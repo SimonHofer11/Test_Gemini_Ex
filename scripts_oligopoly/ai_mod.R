@@ -70,7 +70,7 @@ run_game = function(game, debug_mode=FALSE, start_time, collusion = FALSE) {
   return(game)
 }
 
-new_player_df = function(i, n_rounds, collusion = FALSE, n_players) {
+new_player_df = function(i, n_rounds, collusion = FALSE, n_players, player_type = "FLASH") {
   if  (collusion == FALSE){
     
   tibble(
@@ -85,6 +85,7 @@ new_player_df = function(i, n_rounds, collusion = FALSE, n_players) {
     hist_text = rep("", n_rounds),
     q_prompt = rep("", n_rounds),
     strategy_prompt = rep("", n_rounds),
+    player_type = player_type
   )
   } else {
     #hier eventuell noch für n>2 codieren
@@ -103,19 +104,21 @@ new_player_df = function(i, n_rounds, collusion = FALSE, n_players) {
       coll_message_1_player_1 = rep("", n_rounds),
       coll_message_1_player_2 = rep("", n_rounds),
       coll_message_1_player_1 = rep("", n_rounds),
-      coll_message_1_player_2= rep("", n_rounds)
+      coll_message_1_player_2= rep("", n_rounds),
+      player_type = player_type
+      
     )
   }
 }
 
-new_game = function(n_players, n_rounds, temperatures=rep(1, n_players), collusion = FALSE) {
+new_game = function(n_players, n_rounds, temperatures=rep(1, n_players), collusion = FALSE, player_type = "FLASH") {
   restore.point("new_game")
   game = list(
     ok = TRUE,
     n_players = n_players,
     n_rounds = n_rounds,
     cur_round = 0,
-    player_dfs = lapply(1:n_players,new_player_df, n_rounds=n_rounds, collusion = collusion, n_players = n_players)
+    player_dfs = lapply(1:n_players,new_player_df, n_rounds=n_rounds, collusion = collusion, n_players = n_players, player_type=player_type)
   )
   
   if(!IS_ON_GHA & n_players==2 & n_rounds == 5){
@@ -177,7 +180,12 @@ player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10, api
   prompt = df$strategy_prompt[t]
   
   if(IS_ON_GHA){
-    res = run_gemini(prompt,api_key, model="gemini-1.5-pro", json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
+    if(df$player_type == "FLASH"){
+      model = "gemini-1.5-flash"
+    } else {
+      model = "gemini-1.5-pro"
+    }
+    res = run_gemini(prompt,api_key, model=model, json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
     #res$ok = TRUE
     cur_time = as.numeric(Sys.time())
     
@@ -308,9 +316,16 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
   prompt = df$q_prompt[[t]]
 
   if (IS_ON_GHA) {
+    if(df$player_type == "FLASH"){
+      model = "gemini-1.5-flash"
+    } else {
+      model = "gemini-1.5-pro"
+    }
+    print("MODEL TYPE: ")
+    print(model)
 
   
-    res = run_gemini(prompt,api_key, model="gemini-1.5-pro", json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
+    res = run_gemini(prompt,api_key, model=model, json_mode=FALSE, temperature= 1 , add_prompt=FALSE, verbose=TRUE)
     cur_time = as.numeric(Sys.time())
     #res$ok = TRUE
     

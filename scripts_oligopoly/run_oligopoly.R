@@ -1,6 +1,11 @@
 #Define the number of players (if you select several, the game will be repeated several times)
 N_PLAYERS = c(2) #c(2)
+<<<<<<< Updated upstream
 N_ROUNDS = 2
+=======
+PLAYER_TYPE = c("FLASH","PRO")
+N_ROUNDS = 3
+>>>>>>> Stashed changes
 
 
 is_local <- function(is_local = TRUE) {
@@ -46,7 +51,7 @@ is_local <- function(is_local = TRUE) {
         #cat("\n Objekt results: ",results,".\n")
         n_players <- N_PLAYERS[i]  
         
-        result <- perform_analysis(n_players = n_players, n_rounds = N_ROUNDS, collusion = FALSE)
+        result <- perform_analysis(n_players = n_players, n_rounds = N_ROUNDS, collusion = FALSE, player_type = PLAYER_TYPE)
         cat("\nach Spiel Nummer: ",i,".\n")
         result_name <- paste0("game_", n_players, "_player_run_",i)
         results[[result_name]] <- result
