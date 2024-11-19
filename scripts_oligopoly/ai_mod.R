@@ -72,6 +72,8 @@ run_game = function(game, debug_mode=FALSE, start_time, collusion = FALSE) {
 
 new_player_df = function(i, n_rounds, collusion = FALSE, n_players, player_type = "FLASH") {
   if  (collusion == FALSE){
+    print("player_type")
+    print(player_type)
     
   tibble(
     i = i,
