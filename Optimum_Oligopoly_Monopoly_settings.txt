@@ -1,0 +1,28 @@
+Monopol
+q = Q Optimum: 49.5
+Pi: 2450,25
+
+2 Firmen
+NashMenge Q: 66
+NashMenge q: 33
+PiNash = 1089
+CollusiveQ = 49.5
+Collusiveq = 24.75
+CollusivePi: 1225,13
+
+
+3 Firmen
+NashMenge Q: 74.25
+Nashmenge q: 24.75
+PiNash = 612,56
+CollusiveQ = 49.5
+Collusiveq = 16,5
+CollusivePi = 816,75
+
+5 Firmen
+NashMengeQ: 82.5
+NashMenge q: 16,5
+PiNash = 272,25
+CollusiveQ = 49.5
+Collusiveq = 9.9
+CollusivePi = 490,05

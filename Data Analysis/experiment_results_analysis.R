@@ -23,7 +23,7 @@ library(tidyr)
 #x = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Monopoly/25_Rounds_temperature_0"
 
 #Monopoly 25 Rounds PRO
-#x = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Monopoly/25_Rounds_PRO"
+x = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Monopoly/25_Rounds_PRO"
 
 
 
@@ -95,10 +95,10 @@ q_values <- numeric()
 for (i in 1:6) {
   # Namen des aktuellen Ablaufs generieren
   #Mmonopoly:
-  #ablauf_name <- paste0("game_25_rounds_run_", i)
+  ablauf_name <- paste0("game_25_rounds_run_", i)
   #Oligopoly with prev strat:
   #2 Player
-  ablauf_name <- paste0("game_2_player_run_", i)
+  #ablauf_name <- paste0("game_2_player_run_", i)
   
   #3 Player
   #ablauf_name <- paste0("game_3_player_run_", i)
@@ -109,7 +109,7 @@ for (i in 1:6) {
   
   # Extrahiere die Werte von "Q" und füge sie zur Liste hinzu
   #Monopoly:
-  #q_values <- c(q_values, experiment_results[[1]][[ablauf_name]][["player_dfs"]][["q"]])
+  q_values <- c(q_values, experiment_results[[1]][[ablauf_name]][["player_dfs"]][["q"]])
   
   #Oligopoly without prev strat
   #q_values = c(q_values, experiment_results[[i]][["player_dfs"]][[1]][["Q"]])
@@ -118,7 +118,7 @@ for (i in 1:6) {
   #q_values <- c(q_values, experiment_results[[1]][[1]][[ablauf_name]][["player_dfs"]][[1]][["Q"]])
   
   #Oligopoly pro version
-  q_values <- c(q_values, experiment_results[[1]][[ablauf_name]][["player_dfs"]][[1]][["Q"]])
+  #q_values <- c(q_values, experiment_results[[1]][[ablauf_name]][["player_dfs"]][[1]][["Q"]])
   
 }
 
@@ -127,14 +127,14 @@ q_mean <- mean(q_values, na.rm = TRUE)
 
 #Oligopoly:
 #2 Firms
-r = q_mean / 66
+#r = q_mean / 66
 #3 Firms
 #r = q_mean/74.25
 #5firms
 #r = q_mean/82.5
 
 #Monopoly:
-#r = q_mean/49.5
+r = q_mean/49.5
 #r
 
 q_values_17_25 <- numeric()
