@@ -187,7 +187,7 @@ player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10, api
   
   if(IS_ON_GHA){
     if(df$player_type[i] == "FLASH"){
-      model = "gemini-1.5-flash"
+      model = "gemini-1.5-flash-8b"
     } else {
       model = "gemini-1.5-pro"
     }
@@ -334,7 +334,7 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
 
   if (IS_ON_GHA) {
     if(df$player_type[i] == "FLASH"){
-      model = "gemini-1.5-flash"
+      model = "gemini-1.5-flash-8b"
     } else {
       model = "gemini-1.5-pro"
     }
