@@ -198,7 +198,7 @@ player_run_strategy_prompt = function(game, i, attempt=1, max_attempts = 10, api
     if (cur_time - start_time > MAX_RUNTIME_SEC) {
       return()
     }
-    if(model == "gemini-1.5-flash"){
+    if(df$player_type[i] == "FLASH"){
       Sys.sleep(5)
     } else {
       Sys.sleep(30)
@@ -350,7 +350,7 @@ player_run_q_prompt = function(game, i, attempt=1, max_attempts = 10, api_key, s
       return()
     }
     
-    if(model == "gemini-1.5-flash"){
+    if(df$player_type[i] == "FLASH"){
       Sys.sleep(5)
     } else {
       Sys.sleep(30)
