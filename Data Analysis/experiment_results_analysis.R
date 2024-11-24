@@ -23,7 +23,7 @@ library(tidyr)
 #x = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Monopoly/25_Rounds_temperature_0"
 
 #Monopoly 25 Rounds PRO
-x = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Monopoly/25_Rounds_PRO"
+#x = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Monopoly/25_Rounds_PRO"
 
 
 
@@ -59,6 +59,16 @@ x = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester
 #Oligopoly 5 firms 25 rounds PRO
 #x = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Oligopoly/5_Firms_25_rounds_PRO"
 
+#Oligopoly mixed Variation,
+#4 times Flash, 1 Time PRo
+
+#x = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Oligopoly/mixed_4_Flash_1_pro"
+  
+#4 times Pro, 1 Time Flash
+x = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Oligopoly/mixed_4_Pro_1_Flash"
+
+
+#readRDS("C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Oligopoly/mixed_4_Flash_1_pro/oligopoly_experiment_1732011825.85574_5_5_5_Firmen.Rds")
 
 
 #rds_files = list.files(path = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Oligopoly/2_Firms_25_rounds/05092024_2_Firms_25_Rounds_w_prev_strat/oligopoly_2_firms_25_rounds_with_prev_strat_final.Rds")
@@ -76,15 +86,41 @@ experiment_results <- lapply(seq_along(rds_files), function(i) {
   readRDS(rds_files[i])
 })
 
+
+
+
+# Erstelle einen leeren DataFrame, um die Daten zu sammeln
+df_5_mixed_4_pro_1_flash <- data.frame()
+
+# Iteriere über alle "game_5_player_run_X" in experiment_results[[1]]
+for (run_name in names(experiment_results[[1]])) {
+  # Extrahiere die aktuelle Run-Liste
+  run <- experiment_results[[1]][[run_name]]
+  
+  # Iteriere über alle Player-DataFrames in "player_dfs"
+  for (player_df in run[["player_dfs"]]) {
+    # Füge die Spalten i, t, p, q, pi, Q_other, Q, player_type zum Haupt-DataFrame hinzu
+    df_5_mixed_4_pro_1_flash <- rbind(df_5_mixed_4_pro_1_flash, player_df[, c("i", "t", "p", "q", "pi", "Q_other", "Q", "player_type")])
+  }
+}
+
+# Optional: DataFrame als CSV speichern
+#write.csv(df_5_mixed_4_pro_1_flash, "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Oligopoly/mixed_4_Pro_1_Flash/df_5_mixed_4_pro_1_flash_all_rounds.csv", row.names = FALSE)
+
+
+
+
+
 #Datei vereinen:
-#experiment_results[[1]]$game_25_rounds_run_3 = experiment_results[[2]]$game_25_rounds_run_1
-#experiment_results[[1]]$game_5_player_run_4 = experiment_results[[2]]$game_5_player_run_2
-#experiment_results[[1]]$game_5_player_run_5 = experiment_results[[3]]$game_5_player_run_1
-#experiment_results[[1]]$game_5_player_run_6 = experiment_results[[4]]$game_5_player_run_1
+# experiment_results[[1]]$game_5_player_run_2 = experiment_results[[2]]$game_5_player_run_1
+# experiment_results[[1]]$game_5_player_run_3 = experiment_results[[3]]$game_5_player_run_1
+# experiment_results[[1]]$game_5_player_run_4 = experiment_results[[4]]$game_5_player_run_1
+# experiment_results[[1]]$game_5_player_run_5 = experiment_results[[4]]$game_5_player_run_2
+# experiment_results[[1]]$game_5_player_run_6 = experiment_results[[5]]$game_5_player_run_1
 
 
 
-#saveRDS(object = experiment_results[[1]], file = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Monopoly/25_Rounds_PRO/monopoly_joined.Rds")
+#saveRDS(object = experiment_results[[1]], file = "C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Oligopoly/mixed_4_Pro_1_Flash/All_Runs_joined.Rds")
 
 #experiment_results = readRDS("C:/Users/Simon Hofer/OneDrive/Dokumente/Master/Semesterverzeichnis/Semester 4/Github/Gemini-Ex/gemini_results/Oligopoly/2_Firms_25_rounds/05092024_2_Firms_25_Rounds_w_prev_strat/oligopoly_2_firms_25_rounds_with_prev_strat_final.Rds")
 
@@ -95,7 +131,7 @@ q_values <- numeric()
 for (i in 1:6) {
   # Namen des aktuellen Ablaufs generieren
   #Mmonopoly:
-  ablauf_name <- paste0("game_25_rounds_run_", i)
+  #ablauf_name <- paste0("game_25_rounds_run_", i)
   #Oligopoly with prev strat:
   #2 Player
   #ablauf_name <- paste0("game_2_player_run_", i)
@@ -104,12 +140,12 @@ for (i in 1:6) {
   #ablauf_name <- paste0("game_3_player_run_", i)
   
   #5 Player
-  #ablauf_name <- paste0("game_5_player_run_", i)
+  ablauf_name <- paste0("game_5_player_run_", i)
   
   
   # Extrahiere die Werte von "Q" und füge sie zur Liste hinzu
   #Monopoly:
-  q_values <- c(q_values, experiment_results[[1]][[ablauf_name]][["player_dfs"]][["q"]])
+  #q_values <- c(q_values, experiment_results[[1]][[ablauf_name]][["player_dfs"]][["q"]])
   
   #Oligopoly without prev strat
   #q_values = c(q_values, experiment_results[[i]][["player_dfs"]][[1]][["Q"]])
@@ -118,9 +154,10 @@ for (i in 1:6) {
   #q_values <- c(q_values, experiment_results[[1]][[1]][[ablauf_name]][["player_dfs"]][[1]][["Q"]])
   
   #Oligopoly pro version
-  #q_values <- c(q_values, experiment_results[[1]][[ablauf_name]][["player_dfs"]][[1]][["Q"]])
+  q_values <- c(q_values, experiment_results[[1]][[ablauf_name]][["player_dfs"]][[1]][["Q"]])
   
 }
+
 
 # Durchschnitt der Q-Werte berechnen
 q_mean <- mean(q_values, na.rm = TRUE)
@@ -131,10 +168,10 @@ q_mean <- mean(q_values, na.rm = TRUE)
 #3 Firms
 #r = q_mean/74.25
 #5firms
-#r = q_mean/82.5
+r = q_mean/82.5
 
 #Monopoly:
-r = q_mean/49.5
+#r = q_mean/49.5
 #r
 
 q_values_17_25 <- numeric()
@@ -143,7 +180,7 @@ q_values_17_25 <- numeric()
 for (i in 1:6) {
   # Namen des aktuellen Ablaufs generieren
   #Mmonopoly:
-  ablauf_name <- paste0("game_25_rounds_run_", i)
+  #ablauf_name <- paste0("game_25_rounds_run_", i)
   #Oligopoly:
   #2 Firms
   #ablauf_name <- paste0("game_2_player_run_", i)
@@ -152,12 +189,12 @@ for (i in 1:6) {
   #ablauf_name <- paste0("game_3_player_run_", i)
   
   #5 Firms
-  #ablauf_name <- paste0("game_5_player_run_", i)
+  ablauf_name <- paste0("game_5_player_run_", i)
   
   
   # Extrahiere die Werte von "Q" und füge sie zur Liste hinzu
   #Monopoly:
-  q_values_17_25 <- c(q_values_17_25, experiment_results[[1]][[ablauf_name]][["player_dfs"]][["q"]][17:25])
+  #q_values_17_25 <- c(q_values_17_25, experiment_results[[1]][[ablauf_name]][["player_dfs"]][["q"]][17:25])
   
   #Oligopoly without prev strat:
   #Oligopoly without prev strat
@@ -167,7 +204,7 @@ for (i in 1:6) {
   #q_values_17_25 <- c(q_values_17_25, experiment_results[[1]][[1]][[ablauf_name]][["player_dfs"]][[1]][["Q"]][17:25])
   #q_values_17_25 <- c(q_values_17_25, experiment_results[[1]][[ablauf_name]][["player_dfs"]][[1]][["Q"]][17:25])
   #Oligopoly pro version
-  #q_values_17_25 <- c(q_values_17_25, experiment_results[[1]][[ablauf_name]][["player_dfs"]][[1]][["Q"]][17:25])
+  q_values_17_25 <- c(q_values_17_25, experiment_results[[1]][[ablauf_name]][["player_dfs"]][[1]][["Q"]][17:25])
   
 
 }
@@ -177,7 +214,7 @@ for (i in 1:6) {
 q_mean_17_25 <- mean(q_values_17_25, na.rm = TRUE)
 q_mean_17_25
 #Monopoly
-r_17_25 = q_mean_17_25/49.5
+#r_17_25 = q_mean_17_25/49.5
 
 
 #Oligopoly
@@ -187,14 +224,14 @@ r_17_25 = q_mean_17_25/49.5
 #r_17_25 = q_mean_17_25/74.25
 
 #5firms
-#r_17_25 = q_mean_17_25/82.5
+r_17_25 = q_mean_17_25/82.5
 
 
 
 #2. Bar plot
 
 #Monopoly
-q_nash = 49.5
+#q_nash = 49.5
 #Oligopoly
 #2 Firmen
 #q_nash = 66
@@ -203,14 +240,14 @@ q_nash = 49.5
 #q_nash = 74.5
 
 #5Firmen
-#q_nash = 82.5
+q_nash = 82.5
 library(ggplot2)
 
 
 
 # Datenrahmen erstellen
 data <- data.frame(
-  x = factor(2),  # X-Achse auf 2 fixiert und als Faktor definiert
+  x = factor(),  # X-Achse auf 2 fixiert und als Faktor definiert
   value = c(q_nash, q_mean, q_mean_17_25),
   variable = factor(c("Nash", "Mean 1-25", "Mean 17-25"))
 )
