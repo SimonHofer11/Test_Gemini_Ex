@@ -1,7 +1,7 @@
 #MONOPOLY GAME
 
 #Define the number of rounds (if you select several, the game will be repeated several times with the amount of rounds you selected)
-N_ROUNDS = c(25)
+N_ROUNDS = c(25,25,25,25,25,25,25,25,25,25)
 
 
 is_local <- function(is_local = TRUE) {
