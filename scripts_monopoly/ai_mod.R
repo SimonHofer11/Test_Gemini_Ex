@@ -179,7 +179,7 @@ player_make_q_prompt = function(game){
       "Your profit per unit of output will be the difference between the market price and the unit cost of 1$. Note that you will make a loss if the market price is below the unit costs.\n",
       "Your profit per round is, thus, equal to the profit per unit multiplied by the number of Units you sell.\n",
       "In each round the output decisions of you will be registered, the corresponding price will be determined and the profits will be computed.\n",
-      "We play a total of 25 rounds. In each round you can write down a strategic plan and choose a quantity between 0 and 100 in 0.01 steps.\n\n",
+      "We play a total of 25 rounds. In each round you can write down a strategic plan and choose a quantity between 0 and 100 (you don't have to choose integers as quantity, you can also use decimal numbers if you like).\n\n",
       "To help you for the plan and simulate what quantity a participant might choose, we have provided you with a profit calculator, which allows you to calculate your own profit based on your quantity. The function (exemplarily written in the R programming language) is as follows:\n",
      
        "  profit_calculator <- function(q_i) {\n",
@@ -337,7 +337,7 @@ player_make_strategy_prompt = function(game){
     "Your profit per unit of output will be the difference between the market price and the unit cost of 1$. Note that you will make a loss if the market price is below the unit costs.\n",
     "Your profit per round is, thus, equal to the profit per unit multiplied by the number of Units you sell.\n",
     "In each round the output decisions of you will be registered, the corresponding price will be determined and the profits will be computed.\n",
-    "We play a total of 25 rounds. In each round you can write down a strategic plan and choose a quantity between 0 and 100 in 0.01 steps.\n\n",
+    "We play a total of 25 rounds. In each round you can write down a strategic plan and choose a quantity between 0 and 100 (you don't have to choose integers as quantity, you can also use decimal numbers if you like).\n\n",
     "To help you for the plan and simulate what quantity a participant might choose, we have provided you with a profit calculator, which allows you to calculate your own profit based on your quantity. The function (exemplarily written in the R programming language) is as follows:\n",
     
     "profit_calculator <- function(q_i) {\n",
